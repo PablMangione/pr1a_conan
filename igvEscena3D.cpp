@@ -127,12 +127,12 @@ void igvEscena3D::renderEscenaA ()
 void igvEscena3D::renderEscenaB ()
 {  GLfloat color_pieza[] = { 0, 0, 0.5 };
 
-   // TODO: Practica 2a. Parte B.
-   glMaterialfv ( GL_FRONT, GL_EMISSION, color_pieza );
-
-   glPushMatrix ();
-   glutSolidCube ( 1 );
-   glPopMatrix ();
+   for (int i = 0; i < this->num_instacias; i++) {
+      glPushMatrix();
+      glTranslatef(0, i * 1.5, 0);
+      renderModelo();
+      glPopMatrix();
+   }
 }
 
 /**

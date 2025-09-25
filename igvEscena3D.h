@@ -25,7 +25,6 @@ class igvEscena3D
    private:
       // Atributos
       bool ejes  = true;   ///< Indica si hay que dibujar los ejes coordenados o no
-      // TODO: Declarar atributos para manejar las transformaciones para las escenas B y C
       int num_instacias=3;
       int num_pilas_x=2;
       int num_pilas_z=2;
@@ -44,6 +43,7 @@ class igvEscena3D
 
       bool get_ejes();
       void set_ejes(bool _ejes);
+
 
    private:
       void renderModelo();
