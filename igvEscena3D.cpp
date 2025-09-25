@@ -127,7 +127,7 @@ void igvEscena3D::renderEscenaA ()
 void igvEscena3D::renderEscenaB ()
 {  GLfloat color_pieza[] = { 0, 0, 0.5 };
 
-   for (int i = 0; i < this->num_instacias; i++) {
+   for (int i = 0; i < num_instacias; i++) {
       glPushMatrix();
       glTranslatef(0, i * 1.5, 0);
       renderModelo();
@@ -141,12 +141,24 @@ void igvEscena3D::renderEscenaB ()
 void igvEscena3D::renderEscenaC ()
 {  GLfloat color_pieza[] = { 0.5, 0, 0 };
 
-   // TODO: Practica 2a. Parte C.
-   glMaterialfv ( GL_FRONT, GL_EMISSION, color_pieza );
+   for (int x = 0; x < num_pilas_x; x++) {
+      for (int z = 0; z < num_pilas_z; z++) {
+         glPushMatrix();
+         // Centrar las pilas en el origen
+         glTranslatef(x * 2.5 - (num_pilas_x - 1) * 1.25,
+                     0,
+                     z * 2.5 - (num_pilas_z - 1) * 1.25);
 
-   glPushMatrix ();
-   glutSolidCube ( 1 );
-   glPopMatrix ();
+         // Dibujar pila vertical
+         for (int y = 0; y < num_instacias; y++) {
+            glPushMatrix();
+            glTranslatef(0, y * 1.5, 0);
+            renderModelo();
+            glPopMatrix();
+         }
+         glPopMatrix();
+      }
+   }
 }
 
 /**
