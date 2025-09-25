@@ -10,7 +10,7 @@
 #endif   // defined(__APPLE__) && defined(__MACH__)
 
 /**
- * Los objetos de esta clase representan escenas 3D para su visualización
+ * Los objetos de esta clase representan escenas 3D para su visualizaciï¿½n
  */
 class igvEscena3D
 {  public:
@@ -26,6 +26,10 @@ class igvEscena3D
       // Atributos
       bool ejes  = true;   ///< Indica si hay que dibujar los ejes coordenados o no
       // TODO: Declarar atributos para manejar las transformaciones para las escenas B y C
+      int num_instacias=3;
+      int num_pilas_x=2;
+      int num_pilas_z=2;
+
 
    public:
       // Constructores por defecto y destructor
@@ -34,14 +38,15 @@ class igvEscena3D
       /// Destructor
       ~igvEscena3D() = default;
 
-      // Métodos
-      // método con las llamadas OpenGL para visualizar la escena
+      // Mï¿½todos
+      // mï¿½todo con las llamadas OpenGL para visualizar la escena
       void visualizar ( int escena );
 
       bool get_ejes();
       void set_ejes(bool _ejes);
 
    private:
+      void renderModelo();
       void renderEscenaA();
       void renderEscenaB();
       void renderEscenaC();

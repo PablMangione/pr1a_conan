@@ -3,12 +3,12 @@
 
 #include "igvEscena3D.h"
 
-// Métodos constructores -----------------------------------
+// Mï¿½todos constructores -----------------------------------
 
-// Métodos públicos ----------------------------------------
+// Mï¿½todos pï¿½blicos ----------------------------------------
 
 /**
- * Método para pintar los ejes coordenados llamando a funciones de OpenGL
+ * Mï¿½todo para pintar los ejes coordenados llamando a funciones de OpenGL
  */
 void igvEscena3D::pintar_ejes ()
 {  GLfloat rojo[] = { 1,0,0,1.0 };
@@ -31,9 +31,9 @@ void igvEscena3D::pintar_ejes ()
 }
 
 /**
- * Método con las llamadas OpenGL para visualizar la escena
+ * Mï¿½todo con las llamadas OpenGL para visualizar la escena
  * @param escena Identificador del tipo de escena a dibujar
- * @pre Se asume que el valor del parámetro es correcto
+ * @pre Se asume que el valor del parï¿½metro es correcto
  */
 void igvEscena3D::visualizar ( int escena )
 {  // borra la ventana y el Z-buffer
@@ -51,7 +51,7 @@ void igvEscena3D::visualizar ( int escena )
    {  pintar_ejes ();
    }
 
-   // Escena seleccionada a través del menú (clic botón derecho)
+   // Escena seleccionada a travï¿½s del menï¿½ (clic botï¿½n derecho)
    if ( escena == EscenaA )
    {  renderEscenaA ();
    }
@@ -70,18 +70,55 @@ void igvEscena3D::visualizar ( int escena )
    glutSwapBuffers (); // se utiliza, en vez de glFlush(), para evitar el parpadeo
 }
 
+void igvEscena3D::renderModelo() {
+   GLfloat color_cubo[] = { 0, 0.25, 0 };
+   GLfloat color_cilindro[] = { 0, 0, 0.5 };
+
+   glMaterialfv(GL_FRONT, GL_EMISSION, color_cubo);
+   glPushMatrix();
+      glutSolidCube(1);
+   glPopMatrix();
+
+   glMaterialfv(GL_FRONT, GL_EMISSION, color_cilindro);
+   GLUquadric* quad = gluNewQuadric();
+
+   glPushMatrix();
+      glTranslatef(0, 0.75, 0);
+      glRotatef(90, 1, 0, 0);
+      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0, -0.75, 0);
+      glRotatef(90, 1, 0, 0);
+      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0.75, 0, 0);
+      glRotatef(90, 0, 1, 0);
+      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-0.75, 0, 0);
+      glRotatef(90, 0, 1, 0);
+      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
+   glPopMatrix();
+
+   gluDeleteQuadric(quad);
+}
+
+
 /**
  * Pinta la escena A llamando a las funciones de OpenGL
  */
 void igvEscena3D::renderEscenaA ()
 {  GLfloat color_pieza[] = { 0, 0.25, 0 };
 
-   // TODO: Practica 2a. Parte A.
-   glMaterialfv ( GL_FRONT, GL_EMISSION, color_pieza );
-
-   glPushMatrix ();
-   glutSolidCube ( 1 );
-   glPopMatrix ();
+   glPushMatrix();
+      renderModelo();
+   glPopMatrix();
 }
 
 /**
@@ -113,7 +150,7 @@ void igvEscena3D::renderEscenaC ()
 }
 
 /**
- * Método para consultar si hay que dibujar los ejes o no
+ * Mï¿½todo para consultar si hay que dibujar los ejes o no
  * @retval true Si hay que dibujar los ejes
  * @retval false Si no hay que dibujar los ejes
  */
@@ -122,10 +159,10 @@ bool igvEscena3D::get_ejes ()
 }
 
 /**
- * Método para activar o desactivar el dibujado de los ejes
+ * Mï¿½todo para activar o desactivar el dibujado de los ejes
  * @param _ejes Indica si hay que dibujar los ejes (true) o no (false)
  * @post El estado del objeto cambia en lo que respecta al dibujado de ejes,
- *       de acuerdo al valor pasado como parámetro
+ *       de acuerdo al valor pasado como parï¿½metro
  */
 void igvEscena3D::set_ejes ( bool _ejes )
 {  ejes = _ejes;
