@@ -43,6 +43,12 @@ class igvEscena3D
 
       bool get_ejes();
       void set_ejes(bool _ejes);
+      void incrementar_instancias() { num_instacias++; }
+      void decrementar_instancias() { if (num_instacias > 1) num_instacias--; }
+      void incrementar_pilas_x() { num_pilas_x++; }
+      void decrementar_pilas_x() { if (num_pilas_x > 1) num_pilas_x--; }
+      void incrementar_pilas_z() { num_pilas_z++; }
+      void decrementar_pilas_z() { if (num_pilas_z > 1) num_pilas_z--; }
 
 
    private:

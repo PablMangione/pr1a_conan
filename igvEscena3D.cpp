@@ -83,26 +83,26 @@ void igvEscena3D::renderModelo() {
    GLUquadric* quad = gluNewQuadric();
 
    glPushMatrix();
-      glTranslatef(0, 0.75, 0);
+      glTranslatef(0, -0.5, 0);
       glRotatef(90, 1, 0, 0);
       gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(0, -0.75, 0);
-      glRotatef(90, 1, 0, 0);
+      glTranslatef(0, 0.5, 0);
+      glRotatef(90, -1, 0, 0);
       gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(0.75, 0, 0);
+      glTranslatef(0.5, 0, 0);
       glRotatef(90, 0, 1, 0);
       gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(-0.75, 0, 0);
-      glRotatef(90, 0, 1, 0);
+      glTranslatef(-0.5, 0, 0);
+      glRotatef(90, 0, -1, 0);
       gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
    glPopMatrix();
 
@@ -114,8 +114,7 @@ void igvEscena3D::renderModelo() {
  * Pinta la escena A llamando a las funciones de OpenGL
  */
 void igvEscena3D::renderEscenaA ()
-{  GLfloat color_pieza[] = { 0, 0.25, 0 };
-
+{
    glPushMatrix();
       renderModelo();
    glPopMatrix();
@@ -125,8 +124,7 @@ void igvEscena3D::renderEscenaA ()
  * Pinta la escena B llamando a las funciones de OpenGL
  */
 void igvEscena3D::renderEscenaB ()
-{  GLfloat color_pieza[] = { 0, 0, 0.5 };
-
+{
    for (int i = 0; i < num_instacias; i++) {
       glPushMatrix();
       glTranslatef(0, i * 1.5, 0);
@@ -139,8 +137,7 @@ void igvEscena3D::renderEscenaB ()
  * Pinta la escena C llamando a las funciones de OpenGL
  */
 void igvEscena3D::renderEscenaC ()
-{  GLfloat color_pieza[] = { 0.5, 0, 0 };
-
+{
    for (int x = 0; x < num_pilas_x; x++) {
       for (int z = 0; z < num_pilas_z; z++) {
          glPushMatrix();

@@ -2,10 +2,10 @@
 
 #include "igvInterfaz.h"
 
-// Aplicación del patrón Singleton
+// Aplicaciï¿½n del patrï¿½n Singleton
 igvInterfaz* igvInterfaz::_instancia = nullptr;
 
-// Métodos constructores -----------------------------------
+// Mï¿½todos constructores -----------------------------------
 
 /**
  * Constructor por defecto
@@ -13,12 +13,12 @@ igvInterfaz* igvInterfaz::_instancia = nullptr;
 igvInterfaz::igvInterfaz(): menuSelection(escena.EscenaA)
 {}
 
-// Métodos públicos ----------------------------------------
+// Mï¿½todos pï¿½blicos ----------------------------------------
 
 /**
- * Método para acceder al objeto único de la clase, en aplicación del patrón de
- * diseño Singleton
- * @return Una referencia al objeto único de la clase
+ * Mï¿½todo para acceder al objeto ï¿½nico de la clase, en aplicaciï¿½n del patrï¿½n de
+ * diseï¿½o Singleton
+ * @return Una referencia al objeto ï¿½nico de la clase
  */
 igvInterfaz& igvInterfaz::getInstancia ()
 {  if ( !_instancia )
@@ -29,29 +29,29 @@ igvInterfaz& igvInterfaz::getInstancia ()
 }
 
 /**
- * Inicializa todos los parámetros para crear una ventana de visualización
- * @param argc Número de parámetros por línea de comandos al ejecutar la
- *             aplicación
- * @param argv Parámetros por línea de comandos al ejecutar la aplicación
- * @param _ancho_ventana Ancho inicial de la ventana de visualización
- * @param _alto_ventana Alto inicial de la ventana de visualización
- * @param _pos_X Coordenada X de la posición inicial de la ventana de
- *               visualización
- * @param _pos_Y Coordenada Y de la posición inicial de la ventana de
- *               visualización
- * @param _titulo Título de la ventana de visualización
- * @pre Se asume que todos los parámetros tienen valores válidos
+ * Inicializa todos los parï¿½metros para crear una ventana de visualizaciï¿½n
+ * @param argc Nï¿½mero de parï¿½metros por lï¿½nea de comandos al ejecutar la
+ *             aplicaciï¿½n
+ * @param argv Parï¿½metros por lï¿½nea de comandos al ejecutar la aplicaciï¿½n
+ * @param _ancho_ventana Ancho inicial de la ventana de visualizaciï¿½n
+ * @param _alto_ventana Alto inicial de la ventana de visualizaciï¿½n
+ * @param _pos_X Coordenada X de la posiciï¿½n inicial de la ventana de
+ *               visualizaciï¿½n
+ * @param _pos_Y Coordenada Y de la posiciï¿½n inicial de la ventana de
+ *               visualizaciï¿½n
+ * @param _titulo Tï¿½tulo de la ventana de visualizaciï¿½n
+ * @pre Se asume que todos los parï¿½metros tienen valores vï¿½lidos
  * @post Cambia el alto y ancho de ventana almacenado en el objeto
  */
 void igvInterfaz::configura_entorno ( int argc, char** argv
                                       , int _ancho_ventana, int _alto_ventana
                                       , int _pos_X, int _pos_Y
                                       , std::string _titulo )
-{  // inicialización de los atributos de la interfaz
+{  // inicializaciï¿½n de los atributos de la interfaz
    ancho_ventana = _ancho_ventana;
    alto_ventana = _alto_ventana;
 
-   // inicialización de la ventana de visualización
+   // inicializaciï¿½n de la ventana de visualizaciï¿½n
    glutInit ( &argc, argv );
    glutInitDisplayMode ( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH );
    glutInitWindowSize ( _ancho_ventana, _alto_ventana );
@@ -63,12 +63,12 @@ void igvInterfaz::configura_entorno ( int argc, char** argv
    glEnable ( GL_DEPTH_TEST ); // activa el ocultamiento de superficies por z-buffer
    glClearColor ( 1.0, 1.0, 1.0, 0.0 ); // establece el color de fondo de la ventana
 
-   glEnable ( GL_LIGHTING ); // activa la iluminación de la escena
-   glEnable ( GL_NORMALIZE ); // normaliza los vectores normales para cálculo de iluminación
+   glEnable ( GL_LIGHTING ); // activa la iluminaciï¿½n de la escena
+   glEnable ( GL_NORMALIZE ); // normaliza los vectores normales para cï¿½lculo de iluminaciï¿½n
 }
 
 /**
- * Crea un menú asociado al botón derecho del ratón
+ * Crea un menï¿½ asociado al botï¿½n derecho del ratï¿½n
  */
 void igvInterfaz::create_menu ()
 {  int menu_id = glutCreateMenu ( menuHandle );
@@ -83,41 +83,60 @@ void igvInterfaz::create_menu ()
 }
 
 /**
- * Método para visualizar la escena y esperar a eventos sobre la interfaz
+ * Mï¿½todo para visualizar la escena y esperar a eventos sobre la interfaz
  */
 void igvInterfaz::inicia_bucle_visualizacion ()
-{  glutMainLoop (); // inicia el bucle de visualización de GLUT
+{  glutMainLoop (); // inicia el bucle de visualizaciï¿½n de GLUT
 }
 
 /**
- * Método para control de eventos del teclado
- * @param key Código de la tecla pulsada
- * @param x Coordenada X de la posición del cursor del ratón en el momento del
+ * Mï¿½todo para control de eventos del teclado
+ * @param key Cï¿½digo de la tecla pulsada
+ * @param x Coordenada X de la posiciï¿½n del cursor del ratï¿½n en el momento del
  *          evento de teclado
- * @param y Coordenada Y de la posición del cursor del ratón en el momento del
+ * @param y Coordenada Y de la posiciï¿½n del cursor del ratï¿½n en el momento del
  *          evento de teclado
- * @pre Se asume que todos los parámetros tienen valores válidos
+ * @pre Se asume que todos los parï¿½metros tienen valores vï¿½lidos
  * @post La escena puede cambiar dependiendo de la tecla pulsada
  */
 void igvInterfaz::keyboardFunc ( unsigned char key, int x, int y )
-{  switch ( key )
-   {  case 'e': // activa/desactiva la visualización de los ejes
+{
+   switch ( key ){
+      case 'e':
       case 'E':
          _instancia->escena.set_ejes ( !_instancia->escena.get_ejes () );
          break;
-      case 27: // tecla de escape para SALIR
+      case 'x':
+         _instancia->escena.incrementar_pilas_x();
+         break;
+      case 'X':
+         _instancia->escena.decrementar_pilas_x();
+         break;
+      case 'y':
+         _instancia->escena.incrementar_instancias();
+         break;
+      case 'Y':
+         _instancia->escena.decrementar_instancias();
+         break;
+      case 'z':
+         _instancia->escena.incrementar_pilas_z();
+         break;
+      case 'Z':
+         _instancia->escena.decrementar_pilas_z();
+         break;
+      case 27:
          exit ( 1 );
          break;
    }
-   glutPostRedisplay (); // renueva el contenido de la ventana de vision
+   glutPostRedisplay ();
 }
 
 /**
- * Método que define la cámara de visión y el viewport. Se llama automáticamente
- * cuando se cambia el tamaño de la ventana.
+ * Mï¿½todo que define la cï¿½mara de visiï¿½n y el viewport. Se llama automï¿½ticamente
+ * cuando se cambia el tamaï¿½o de la ventana.
  * @param w Nuevo ancho de la ventana
  * @param h Nuevo alto de la ventana
- * @pre Se asume que todos los parámetros tienen valores válidos
+ * @pre Se asume que todos los parï¿½metros tienen valores vï¿½lidos
  */
 void igvInterfaz::reshapeFunc ( int w, int h )
 {  // dimensiona el viewport al nuevo ancho y alto de la ventana
@@ -142,17 +161,17 @@ void igvInterfaz::reshapeFunc ( int w, int h )
 }
 
 /**
- * Método para visualizar la escena
+ * Mï¿½todo para visualizar la escena
  */
 void igvInterfaz::displayFunc ()
 {  _instancia->escena.visualizar ( _instancia->menuSelection );
 }
 
 /**
- * Método para gestionar la selección de opciones de menú
- * @param value Nueva opción seleccionada
- * @pre Se asume que el valor del parámetro es correcto
- * @post Se almacena en el objeto la opción seleccionada
+ * Mï¿½todo para gestionar la selecciï¿½n de opciones de menï¿½
+ * @param value Nueva opciï¿½n seleccionada
+ * @pre Se asume que el valor del parï¿½metro es correcto
+ * @post Se almacena en el objeto la opciï¿½n seleccionada
  */
 void igvInterfaz::menuHandle ( int value )
 {  _instancia->menuSelection = value;
@@ -160,7 +179,7 @@ void igvInterfaz::menuHandle ( int value )
 }
 
 /**
- * Método para inicializar los callbacks
+ * Mï¿½todo para inicializar los callbacks
  */
 void igvInterfaz::inicializa_callbacks()
 {  glutKeyboardFunc ( keyboardFunc );
@@ -169,36 +188,36 @@ void igvInterfaz::inicializa_callbacks()
 }
 
 /**
- * Método para consultar el ancho de la ventana de visualización
- * @return El valor almacenado como ancho de la ventana de visualización
+ * Mï¿½todo para consultar el ancho de la ventana de visualizaciï¿½n
+ * @return El valor almacenado como ancho de la ventana de visualizaciï¿½n
  */
 int igvInterfaz::get_ancho_ventana ()
 {  return ancho_ventana;
 }
 
 /**
- * Método para consultar el alto de la ventana de visualización
- * @return El valor almacenado como alto de la ventana de visualización
+ * Mï¿½todo para consultar el alto de la ventana de visualizaciï¿½n
+ * @return El valor almacenado como alto de la ventana de visualizaciï¿½n
  */
 int igvInterfaz::get_alto_ventana ()
 {  return alto_ventana;
 }
 
 /**
- * Método para cambiar el ancho de la ventana de visualización
- * @param _ancho_ventana Nuevo valor para el ancho de la ventana de visualización
- * @pre Se asume que el parámetro tiene un valor válido
- * @post El ancho de ventana almacenado en la aplicación cambia al nuevo valor
+ * Mï¿½todo para cambiar el ancho de la ventana de visualizaciï¿½n
+ * @param _ancho_ventana Nuevo valor para el ancho de la ventana de visualizaciï¿½n
+ * @pre Se asume que el parï¿½metro tiene un valor vï¿½lido
+ * @post El ancho de ventana almacenado en la aplicaciï¿½n cambia al nuevo valor
  */
 void igvInterfaz::set_ancho_ventana ( int _ancho_ventana )
 {  ancho_ventana = _ancho_ventana;
 }
 
 /**
- * Método para cambiar el alto de la ventana de visualización
- * @param _alto_ventana Nuevo valor para el alto de la ventana de visualización
- * @pre Se asume que el parámetro tiene un valor válido
- * @post El alto de ventana almacenado en la aplicación cambia al nuevo valor
+ * Mï¿½todo para cambiar el alto de la ventana de visualizaciï¿½n
+ * @param _alto_ventana Nuevo valor para el alto de la ventana de visualizaciï¿½n
+ * @pre Se asume que el parï¿½metro tiene un valor vï¿½lido
+ * @post El alto de ventana almacenado en la aplicaciï¿½n cambia al nuevo valor
  */
 void igvInterfaz::set_alto_ventana ( int _alto_ventana )
 {  alto_ventana = _alto_ventana;
