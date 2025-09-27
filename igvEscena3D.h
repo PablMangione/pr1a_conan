@@ -13,22 +13,10 @@
  * Los objetos de esta clase representan escenas 3D para su visualizaci�n
  */
 class igvEscena3D
-{  public:
-      const int EscenaA = 1;   ///< Identificador interno de la escena A
-      const int EscenaB = 2;   ///< Identificador interno de la escena B
-      const int EscenaC = 3;   ///< Identificador interno de la escena C
-
-      const char *Nombre_EscenaA = "Escena A";   ///< Etiqueta de la escena A
-      const char *Nombre_EscenaB = "Escena B";   ///< Etiqueta de la escena B
-      const char* Nombre_EscenaC = "Escena C";   ///< Etiqueta de la escena C
-
+{
    private:
       // Atributos
       bool ejes  = true;   ///< Indica si hay que dibujar los ejes coordenados o no
-      int num_instacias=3;
-      int num_pilas_x=2;
-      int num_pilas_z=2;
-
 
    public:
       // Constructores por defecto y destructor
@@ -39,23 +27,12 @@ class igvEscena3D
 
       // M�todos
       // m�todo con las llamadas OpenGL para visualizar la escena
-      void visualizar ( int escena );
+      void visualizar ();
 
       bool get_ejes();
       void set_ejes(bool _ejes);
-      void incrementar_instancias() { num_instacias++; }
-      void decrementar_instancias() { if (num_instacias > 1) num_instacias--; }
-      void incrementar_pilas_x() { num_pilas_x++; }
-      void decrementar_pilas_x() { if (num_pilas_x > 1) num_pilas_x--; }
-      void incrementar_pilas_z() { num_pilas_z++; }
-      void decrementar_pilas_z() { if (num_pilas_z > 1) num_pilas_z--; }
-
 
    private:
-      void renderModelo();
-      void renderEscenaA();
-      void renderEscenaB();
-      void renderEscenaC();
       void pintar_ejes ();
 };
 

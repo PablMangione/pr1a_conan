@@ -15,20 +15,18 @@
 #include "igvEscena3D.h"
 
 /**
- * Los objetos de esta clase encapsulan la interfaz y el estado de la aplicación
+ * Los objetos de esta clase encapsulan la interfaz y el estado de la aplicaciï¿½n
  */
 class igvInterfaz
 {  private:
       // Atributos
-      int ancho_ventana = 0; ///< Ancho de la ventana de visualización
-      int alto_ventana = 0;  ///< Alto de la ventana de visualización
+      int ancho_ventana = 0; ///< Ancho de la ventana de visualizaciï¿½n
+      int alto_ventana = 0;  ///< Alto de la ventana de visualizaciï¿½n
 
       igvEscena3D escena; ///< Escena que se visualiza en la ventana definida por igvInterfaz
 
-      int menuSelection = 0; ///< Última opción de menú seleccionada
-
-      // Aplicación del patrón Singleton
-      static igvInterfaz* _instancia;   ///< Puntero al objeto único de la clase
+      // Aplicaciï¿½n del patrï¿½n Singleton
+      static igvInterfaz* _instancia;   ///< Puntero al objeto ï¿½nico de la clase
       igvInterfaz();
 
    public:
@@ -37,21 +35,20 @@ class igvInterfaz
       /// Destructor
       ~igvInterfaz() = default;
 
-      // Métodos estáticos
+      // Mï¿½todos estï¿½ticos
       // callbacks de eventos
-      static void keyboardFunc ( unsigned char key, int x, int y ); // método para control de eventos del teclado
-      static void reshapeFunc ( int w, int h ); // método que define la cámara de vision y el viewport
-      // se llama automáticamente cuando se cambia el tamaño de la ventana
-      static void displayFunc (); // método para visualizar la escena
-      static void menuHandle(int value); // método para gestionar la selección de opciones de menú
+      static void keyboardFunc ( unsigned char key, int x, int y ); // mï¿½todo para control de eventos del teclado
+      static void reshapeFunc ( int w, int h ); // mï¿½todo que define la cï¿½mara de vision y el viewport
+      // se llama automï¿½ticamente cuando se cambia el tamaï¿½o de la ventana
+      static void displayFunc (); // mï¿½todo para visualizar la escena
 
 
-      // Métodos
-      // inicializa todos los parámetros para crear una ventana de visualización
-      void configura_entorno ( int argc, char** argv // parámetros del main
-                               , int _ancho_ventana, int _alto_ventana // ancho y alto de la ventana de visualización
-                               , int _pos_X, int _pos_Y // posición inicial de la ventana de visualización
-                               , std::string _titulo // título de la ventana de visualización
+      // Mï¿½todos
+      // inicializa todos los parï¿½metros para crear una ventana de visualizaciï¿½n
+      void configura_entorno ( int argc, char** argv // parï¿½metros del main
+                               , int _ancho_ventana, int _alto_ventana // ancho y alto de la ventana de visualizaciï¿½n
+                               , int _pos_X, int _pos_Y // posiciï¿½n inicial de la ventana de visualizaciï¿½n
+                               , std::string _titulo // tï¿½tulo de la ventana de visualizaciï¿½n
                              );
       void create_menu(); // Creates a menu that is handled with the right button of the mouse.
 
@@ -59,7 +56,7 @@ class igvInterfaz
 
       void inicia_bucle_visualizacion (); // visualiza la escena y espera a eventos sobre la interfaz
 
-      // métodos get_ y set_ de acceso a los atributos
+      // mï¿½todos get_ y set_ de acceso a los atributos
       int get_ancho_ventana();
       int get_alto_ventana();
 

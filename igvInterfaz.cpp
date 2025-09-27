@@ -10,7 +10,7 @@ igvInterfaz* igvInterfaz::_instancia = nullptr;
 /**
  * Constructor por defecto
  */
-igvInterfaz::igvInterfaz(): menuSelection(escena.EscenaA)
+igvInterfaz::igvInterfaz()
 {}
 
 // M�todos p�blicos ----------------------------------------
@@ -58,7 +58,6 @@ void igvInterfaz::configura_entorno ( int argc, char** argv
    glutInitWindowPosition ( _pos_X, _pos_Y );
    glutCreateWindow ( _titulo.c_str () );
 
-   create_menu ();
 
    glEnable ( GL_DEPTH_TEST ); // activa el ocultamiento de superficies por z-buffer
    glClearColor ( 1.0, 1.0, 1.0, 0.0 ); // establece el color de fondo de la ventana
@@ -67,20 +66,6 @@ void igvInterfaz::configura_entorno ( int argc, char** argv
    glEnable ( GL_NORMALIZE ); // normaliza los vectores normales para c�lculo de iluminaci�n
 }
 
-/**
- * Crea un men� asociado al bot�n derecho del rat�n
- */
-void igvInterfaz::create_menu ()
-{  int menu_id = glutCreateMenu ( menuHandle );
-   glutAddMenuEntry ( _instancia->escena.Nombre_EscenaA
-                      , _instancia->escena.EscenaA );
-   glutAddMenuEntry ( _instancia->escena.Nombre_EscenaB
-                      , _instancia->escena.EscenaB );
-   glutAddMenuEntry ( _instancia->escena.Nombre_EscenaC
-                      , _instancia->escena.EscenaC );
-
-   glutAttachMenu ( GLUT_RIGHT_BUTTON );
-}
 
 /**
  * M�todo para visualizar la escena y esperar a eventos sobre la interfaz
@@ -105,24 +90,6 @@ void igvInterfaz::keyboardFunc ( unsigned char key, int x, int y )
       case 'e':
       case 'E':
          _instancia->escena.set_ejes ( !_instancia->escena.get_ejes () );
-         break;
-      case 'x':
-         _instancia->escena.incrementar_pilas_x();
-         break;
-      case 'X':
-         _instancia->escena.decrementar_pilas_x();
-         break;
-      case 'y':
-         _instancia->escena.incrementar_instancias();
-         break;
-      case 'Y':
-         _instancia->escena.decrementar_instancias();
-         break;
-      case 'z':
-         _instancia->escena.incrementar_pilas_z();
-         break;
-      case 'Z':
-         _instancia->escena.decrementar_pilas_z();
          break;
       case 27:
          exit ( 1 );
@@ -164,18 +131,7 @@ void igvInterfaz::reshapeFunc ( int w, int h )
  * M�todo para visualizar la escena
  */
 void igvInterfaz::displayFunc ()
-{  _instancia->escena.visualizar ( _instancia->menuSelection );
-}
-
-/**
- * M�todo para gestionar la selecci�n de opciones de men�
- * @param value Nueva opci�n seleccionada
- * @pre Se asume que el valor del par�metro es correcto
- * @post Se almacena en el objeto la opci�n seleccionada
- */
-void igvInterfaz::menuHandle ( int value )
-{  _instancia->menuSelection = value;
-   glutPostRedisplay (); // renew the content of the window
+{  _instancia->escena.visualizar();
 }
 
 /**

@@ -35,7 +35,7 @@ void igvEscena3D::pintar_ejes ()
  * @param escena Identificador del tipo de escena a dibujar
  * @pre Se asume que el valor del par�metro es correcto
  */
-void igvEscena3D::visualizar ( int escena )
+void igvEscena3D::visualizar ()
 {  // borra la ventana y el Z-buffer
    glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -51,111 +51,8 @@ void igvEscena3D::visualizar ( int escena )
    {  pintar_ejes ();
    }
 
-   // Escena seleccionada a trav�s del men� (clic bot�n derecho)
-   if ( escena == EscenaA )
-   {  renderEscenaA ();
-   }
-   else
-   {  if ( escena == EscenaB )
-      {  renderEscenaB ();
-      }
-      else
-      {  if ( escena == EscenaC )
-         {  renderEscenaC ();
-         }
-      }
-   }
-
    glPopMatrix (); // restaura la matriz de modelado
    glutSwapBuffers (); // se utiliza, en vez de glFlush(), para evitar el parpadeo
-}
-
-void igvEscena3D::renderModelo() {
-   GLfloat color_cubo[] = { 0, 0.25, 0 };
-   GLfloat color_cilindro[] = { 0, 0, 0.5 };
-
-   glMaterialfv(GL_FRONT, GL_EMISSION, color_cubo);
-   glPushMatrix();
-      glutSolidCube(1);
-   glPopMatrix();
-
-   glMaterialfv(GL_FRONT, GL_EMISSION, color_cilindro);
-   GLUquadric* quad = gluNewQuadric();
-
-   glPushMatrix();
-      glTranslatef(0, -0.5, 0);
-      glRotatef(90, 1, 0, 0);
-      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0, 0.5, 0);
-      glRotatef(90, -1, 0, 0);
-      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0.5, 0, 0);
-      glRotatef(90, 0, 1, 0);
-      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(-0.5, 0, 0);
-      glRotatef(90, 0, -1, 0);
-      gluCylinder(quad, 0.2, 0.2, 0.5, 20, 20);
-   glPopMatrix();
-
-   gluDeleteQuadric(quad);
-}
-
-
-/**
- * Pinta la escena A llamando a las funciones de OpenGL
- */
-void igvEscena3D::renderEscenaA ()
-{
-   glPushMatrix();
-      renderModelo();
-   glPopMatrix();
-}
-
-/**
- * Pinta la escena B llamando a las funciones de OpenGL
- */
-void igvEscena3D::renderEscenaB ()
-{
-   for (int i = 0; i < num_instacias; i++) {
-      glPushMatrix();
-      glTranslatef(0, i * 1.5, 0);
-      renderModelo();
-      glPopMatrix();
-   }
-}
-
-/**
- * Pinta la escena C llamando a las funciones de OpenGL
- */
-void igvEscena3D::renderEscenaC ()
-{
-   for (int x = 0; x < num_pilas_x; x++) {
-      for (int z = 0; z < num_pilas_z; z++) {
-         glPushMatrix();
-         // Centrar las pilas en el origen
-         glTranslatef(x * 2.5 - (num_pilas_x - 1) * 1.25,
-                     0,
-                     z * 2.5 - (num_pilas_z - 1) * 1.25);
-
-         // Dibujar pila vertical
-         for (int y = 0; y < num_instacias; y++) {
-            glPushMatrix();
-            glTranslatef(0, y * 1.5, 0);
-            renderModelo();
-            glPopMatrix();
-         }
-         glPopMatrix();
-      }
-   }
 }
 
 /**
