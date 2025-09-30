@@ -159,6 +159,10 @@ bool igvEscena3D::get_ejes() {
     return ejes;
 }
 
+int igvEscena3D::getObjetoSeleccionado() {
+    return objetoSeleccionado;
+}
+
 void igvEscena3D::set_ejes(bool _ejes) {
     ejes = _ejes;
 }
