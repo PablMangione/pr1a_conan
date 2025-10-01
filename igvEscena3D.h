@@ -9,7 +9,6 @@
 #include <GL/glut.h>
 #endif   // defined(__APPLE__) && defined(__MACH__)
 
-#include <cmath>
 class igvEscena3D {
 public:
     igvEscena3D();
@@ -42,10 +41,6 @@ private:
     bool modo1 = true;
 
     struct Objeto3D {
-        //CONSEJO PARA EVITAR COPIAS: convertir el struct en una clase
-        //10 atributos, constructores, destructor, getters y setters
-        //OTRA IDEA, crear un array de tres posiciones para cada parámetro, por ej
-        //tx[0] sería la traslación en el eje x del elemento 0 y así....
         float tx = 0.0f, ty = 0.0f, tz = 0.0f;
         float rx = 0.0f, ry = 0.0f, rz = 0.0f;
         float sx = 1.0f, sy = 1.0f, sz = 1.0f;

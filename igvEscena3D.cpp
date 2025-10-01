@@ -4,10 +4,9 @@
 #include "igvEscena3D.h"
 
 #include <iostream>
-#include <ostream>
+#include <cmath>
 
 igvEscena3D::igvEscena3D() {
-    // Posiciones iniciales. DEPENDEN DE CÓMO SEAN VUESTROS OBJETOS
     objetos[0].tx = -3.0f;
     objetos[0].ty = 0.0f;
     objetos[0].tz = 0.0f;
@@ -60,7 +59,7 @@ void igvEscena3D::renderObjeto2() {
     GLUquadric *quad = gluNewQuadric();
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
     glPushMatrix();
-    glTranslatef(0,0.7,0);
+    glTranslatef(0, 0.7, 0);
     glRotatef(90, 1, 0, 0);
     gluCylinder(quad, 0.6f, 0.6f, 1.5f, 20, 20);
     glPopMatrix();
@@ -157,9 +156,12 @@ void igvEscena3D::trasladar(float dx, float dy, float dz) {
 void igvEscena3D::rotar(char eje, float angulo) {
     if (modo1) {
         switch (eje) {
-            case 'x': objetos[objetoSeleccionado].rx += angulo; break;
-            case 'y': objetos[objetoSeleccionado].ry += angulo; break;
-            case 'z': objetos[objetoSeleccionado].rz += angulo; break;
+            case 'x': objetos[objetoSeleccionado].rx += angulo;
+                break;
+            case 'y': objetos[objetoSeleccionado].ry += angulo;
+                break;
+            case 'z': objetos[objetoSeleccionado].rz += angulo;
+                break;
         }
     } else {
         float rad = angulo * M_PI / 180.0f;
@@ -224,13 +226,13 @@ void igvEscena3D::set_ejes(bool _ejes) {
     ejes = _ejes;
 }
 
-void igvEscena3D::multiplicarMatrices(GLfloat* nueva, GLfloat* acumulada) {
+void igvEscena3D::multiplicarMatrices(GLfloat *nueva, GLfloat *acumulada) {
     GLfloat resultado[16];
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            resultado[i*4 + j] = 0;
+            resultado[i * 4 + j] = 0;
             for (int k = 0; k < 4; k++) {
-                resultado[i*4 + j] += acumulada[i*4 + k] * nueva[k*4 + j];
+                resultado[i * 4 + j] += acumulada[i * 4 + k] * nueva[k * 4 + j];
             }
         }
     }
