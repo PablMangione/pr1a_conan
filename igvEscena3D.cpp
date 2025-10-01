@@ -176,7 +176,9 @@ void igvEscena3D::rotar(char eje, float angulo) {
                 0, -s, c, 0,
                 0, 0, 0, 1
             };
-            memcpy(matrizR, temp, sizeof(temp));
+            for (int i = 0; i < 16; i++) {
+                matrizR[i] = temp[i];
+            }
         } else if (eje == 'y') {
             GLfloat temp[16] = {
                 c, 0, -s, 0,
@@ -184,7 +186,9 @@ void igvEscena3D::rotar(char eje, float angulo) {
                 s, 0, c, 0,
                 0, 0, 0, 1
             };
-            memcpy(matrizR, temp, sizeof(temp));
+            for (int i = 0; i < 16; i++) {
+                matrizR[i] = temp[i];
+            }
         } else {
             GLfloat temp[16] = {
                 c, s, 0, 0,
@@ -192,7 +196,9 @@ void igvEscena3D::rotar(char eje, float angulo) {
                 0, 0, 1, 0,
                 0, 0, 0, 1
             };
-            memcpy(matrizR, temp, sizeof(temp));
+            for (int i = 0; i < 16; i++) {
+                matrizR[i] = temp[i];
+            }
         }
         multiplicarMatrices(matrizR, objetos[objetoSeleccionado].matrizTransformacion);
     }
@@ -236,5 +242,7 @@ void igvEscena3D::multiplicarMatrices(GLfloat *nueva, GLfloat *acumulada) {
             }
         }
     }
-    memcpy(acumulada, resultado, 16 * sizeof(GLfloat));
+    for (int i = 0; i < 16; i++) {
+        acumulada[i] = resultado[i];
+    }
 }
