@@ -46,6 +46,13 @@ void igvEscena3D::renderObjeto1() {
     glPushMatrix();
     glutSolidCube(1.0f);
     glPopMatrix();
+    GLfloat colorNuevo[] = {0.2f, 0.8f, 0.8f, 1.0f};
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorNuevo);
+    glPushMatrix();
+    glTranslatef(0.0f, 1.0f, 0.0f);
+    glScalef(1.0f, 1.0f, 3.0f);
+    glutSolidCube(0.5f);
+    glPopMatrix();
 }
 
 void igvEscena3D::renderObjeto2() {
@@ -70,11 +77,15 @@ void igvEscena3D::renderObjeto3() {
 }
 
 void igvEscena3D::aplicarTransformaciones(int indice) {
-    glTranslatef(objetos[indice].tx, objetos[indice].ty, objetos[indice].tz);
-    glRotatef(objetos[indice].rx, 1, 0, 0);
-    glRotatef(objetos[indice].ry, 0, 1, 0);
-    glRotatef(objetos[indice].rz, 0, 0, 1);
-    glScalef(objetos[indice].sx, objetos[indice].sy, objetos[indice].sz);
+    if (modo1) {
+        glTranslatef(objetos[indice].tx, objetos[indice].ty, objetos[indice].tz);
+        glRotatef(objetos[indice].rx, 1, 0, 0);
+        glRotatef(objetos[indice].ry, 0, 1, 0);
+        glRotatef(objetos[indice].rz, 0, 0, 1);
+        glScalef(objetos[indice].sx, objetos[indice].sy, objetos[indice].sz);
+    } else {
+        glMultMatrixf(objetos[indice].matrizTransformacion);
+    }
 }
 
 void igvEscena3D::dibujarIndicadorSeleccion() {
@@ -96,8 +107,6 @@ void igvEscena3D::dibujarIndicadorSeleccion() {
 }
 
 void igvEscena3D::seleccionarObjeto(int indice) {
-    // Validación simple
-    std::cout << indice << std::endl;
     objetos[objetoSeleccionado].seleccionado = false;
     objetos[indice].seleccionado = true;
     objetoSeleccionado = indice;
@@ -130,29 +139,77 @@ void igvEscena3D::visualizar() {
 }
 
 void igvEscena3D::trasladar(float dx, float dy, float dz) {
-    objetos[objetoSeleccionado].tx += dx;
-    objetos[objetoSeleccionado].ty += dy;
-    objetos[objetoSeleccionado].tz += dz;
+    if (modo1) {
+        objetos[objetoSeleccionado].tx += dx;
+        objetos[objetoSeleccionado].ty += dy;
+        objetos[objetoSeleccionado].tz += dz;
+    } else {
+        GLfloat matrizT[16] = {
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            dx, dy, dz, 1
+        };
+        multiplicarMatrices(matrizT, objetos[objetoSeleccionado].matrizTransformacion);
+    }
 }
 
 void igvEscena3D::rotar(char eje, float angulo) {
-    switch (eje) {
-        case 'x':
-            objetos[objetoSeleccionado].rx += angulo;
-            break;
-        case 'y':
-            objetos[objetoSeleccionado].ry += angulo;
-            break;
-        case 'z':
-            objetos[objetoSeleccionado].rz += angulo;
-            break;
+    if (modo1) {
+        switch (eje) {
+            case 'x': objetos[objetoSeleccionado].rx += angulo; break;
+            case 'y': objetos[objetoSeleccionado].ry += angulo; break;
+            case 'z': objetos[objetoSeleccionado].rz += angulo; break;
+        }
+    } else {
+        float rad = angulo * M_PI / 180.0f;
+        float c = cos(rad);
+        float s = sin(rad);
+        GLfloat matrizR[16];
+
+        if (eje == 'x') {
+            GLfloat temp[16] = {
+                1, 0, 0, 0,
+                0, c, s, 0,
+                0, -s, c, 0,
+                0, 0, 0, 1
+            };
+            memcpy(matrizR, temp, sizeof(temp));
+        } else if (eje == 'y') {
+            GLfloat temp[16] = {
+                c, 0, -s, 0,
+                0, 1, 0, 0,
+                s, 0, c, 0,
+                0, 0, 0, 1
+            };
+            memcpy(matrizR, temp, sizeof(temp));
+        } else {
+            GLfloat temp[16] = {
+                c, s, 0, 0,
+                -s, c, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            };
+            memcpy(matrizR, temp, sizeof(temp));
+        }
+        multiplicarMatrices(matrizR, objetos[objetoSeleccionado].matrizTransformacion);
     }
 }
 
 void igvEscena3D::escalar(float factor) {
-    objetos[objetoSeleccionado].sx *= factor;
-    objetos[objetoSeleccionado].sy *= factor;
-    objetos[objetoSeleccionado].sz *= factor;
+    if (modo1) {
+        objetos[objetoSeleccionado].sx *= factor;
+        objetos[objetoSeleccionado].sy *= factor;
+        objetos[objetoSeleccionado].sz *= factor;
+    } else {
+        GLfloat matrizS[16] = {
+            factor, 0, 0, 0,
+            0, factor, 0, 0,
+            0, 0, factor, 0,
+            0, 0, 0, 1
+        };
+        multiplicarMatrices(matrizS, objetos[objetoSeleccionado].matrizTransformacion);
+    }
 }
 
 bool igvEscena3D::get_ejes() {
@@ -165,4 +222,17 @@ int igvEscena3D::getObjetoSeleccionado() {
 
 void igvEscena3D::set_ejes(bool _ejes) {
     ejes = _ejes;
+}
+
+void igvEscena3D::multiplicarMatrices(GLfloat* nueva, GLfloat* acumulada) {
+    GLfloat resultado[16];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            resultado[i*4 + j] = 0;
+            for (int k = 0; k < 4; k++) {
+                resultado[i*4 + j] += acumulada[i*4 + k] * nueva[k*4 + j];
+            }
+        }
+    }
+    memcpy(acumulada, resultado, 16 * sizeof(GLfloat));
 }

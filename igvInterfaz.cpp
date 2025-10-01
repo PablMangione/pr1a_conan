@@ -38,7 +38,7 @@ void igvInterfaz::configura_entorno(int argc, char **argv
 
 
 void igvInterfaz::inicia_bucle_visualizacion() {
-    glutMainLoop(); // inicia el bucle de visualizaci�n de GLUT
+    glutMainLoop();
 }
 
 void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
@@ -87,9 +87,12 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
         case 'S':
             _instancia->escena.escalar(0.9f);
             break;
+        case 'm':
+        case 'M':
+            _instancia->escena.cambiarModo();
+            break;
         case 27:
             exit(1);
-            break;
     }
     glutPostRedisplay();
 }
