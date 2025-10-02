@@ -5,25 +5,19 @@
 #include <cmath>
 
 igvEscena3D::igvEscena3D() {
-    modo1 = true;
+    modo = true;
     ejes = false;
     objetos[0].seleccionado = true;
     objetoSeleccionado = 0;
-
-    // Posiciones iniciales FIJAS de cada objeto
     objetos[0].tx_inicial = -3.0f;
     objetos[0].ty_inicial = 0.0f;
     objetos[0].tz_inicial = 0.0f;
-
     objetos[1].tx_inicial = 0.0f;
     objetos[1].ty_inicial = 0.0f;
     objetos[1].tz_inicial = 0.0f;
-
     objetos[2].tx_inicial = 3.0f;
     objetos[2].ty_inicial = 0.0f;
     objetos[2].tz_inicial = 0.0f;
-
-    // Secuencia de transformaciones vacía al inicio
     secuenciaTransformaciones.clear();
 }
 
@@ -104,50 +98,46 @@ void igvEscena3D::aplicarTransformacion(const Transformacion& t) {
 }
 
 void igvEscena3D::aplicarTransformaciones() {
-    // Primero aplicar la posición inicial del objeto seleccionado
     glTranslatef(objetos[objetoSeleccionado].tx_inicial,
-                 objetos[objetoSeleccionado].ty_inicial,
-                 objetos[objetoSeleccionado].tz_inicial);
-
-    if (modo1) {
-        // Modo TRS: aplicar en orden T -> R -> S
-        // Primero todas las traslaciones
+                     objetos[objetoSeleccionado].ty_inicial,
+                     objetos[objetoSeleccionado].tz_inicial);
+    if (modo) {
         for (const auto& t : secuenciaTransformaciones) {
             if (t.tipo == Transformacion::TRASLACION) {
                 aplicarTransformacion(t);
             }
         }
-        // Luego todas las rotaciones
         for (const auto& t : secuenciaTransformaciones) {
             if (t.tipo == Transformacion::ROTACION_X ||
                 t.tipo == Transformacion::ROTACION_Y ||
                 t.tipo == Transformacion::ROTACION_Z) {
                 aplicarTransformacion(t);
-            }
+                }
         }
-        // Finalmente todos los escalados
         for (const auto& t : secuenciaTransformaciones) {
             if (t.tipo == Transformacion::ESCALADO) {
                 aplicarTransformacion(t);
             }
         }
     } else {
-        // Modo Secuencial: aplicar en el orden en que se agregaron
-        for (const auto& t : secuenciaTransformaciones) {
-            aplicarTransformacion(t);
+        for (int i = secuenciaTransformaciones.size() - 1; i >= 0; i--) {
+            aplicarTransformacion(secuenciaTransformaciones[i]);
         }
     }
 }
 
 void igvEscena3D::dibujarIndicadorSeleccion() {
     GLfloat color_seleccion[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    if (!modo) {
+        color_seleccion[0] = 0.1f;
+        color_seleccion[1] = 0.7f;
+        color_seleccion[2] = 0.1f;
+    }
     glMaterialfv(GL_FRONT, GL_EMISSION, color_seleccion);
-
     glPushMatrix();
     aplicarTransformaciones();
     glutWireCube(2.0f);
     glPopMatrix();
-
     GLfloat no_emission[] = {0.0f, 0.0f, 0.0f, 1.0f};
     glMaterialfv(GL_FRONT, GL_EMISSION, no_emission);
 }
@@ -162,16 +152,11 @@ void igvEscena3D::visualizar() {
     if (ejes) {
         pintar_ejes();
     }
-
-    // Dibujar cada objeto
     for(int i = 0; i < 3; i++) {
         glPushMatrix();
-
-        // Solo aplicar transformaciones al objeto seleccionado
         if (i == objetoSeleccionado) {
             aplicarTransformaciones();
         } else {
-            // Objetos no seleccionados se dibujan en su posición inicial
             glTranslatef(objetos[i].tx_inicial,
                         objetos[i].ty_inicial,
                         objetos[i].tz_inicial);
@@ -183,7 +168,6 @@ void igvEscena3D::visualizar() {
 
         glPopMatrix();
     }
-
     dibujarIndicadorSeleccion();
     glPopMatrix();
     glutSwapBuffers();
@@ -224,10 +208,7 @@ void igvEscena3D::escalar(float factor) {
 
 void igvEscena3D::seleccionarObjeto(int indice) {
     if (indice != objetoSeleccionado) {
-        // Limpiar la secuencia de transformaciones al cambiar de objeto
         secuenciaTransformaciones.clear();
-
-        // Actualizar selección
         objetos[objetoSeleccionado].seleccionado = false;
         objetos[indice].seleccionado = true;
         objetoSeleccionado = indice;

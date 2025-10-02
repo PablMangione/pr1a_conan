@@ -24,32 +24,24 @@ public:
     void trasladar(float dx, float dy, float dz);
     void rotar(char eje, float angulo);
     void escalar(float factor);
-    void cambiarModo() { modo1 = !modo1; }
-    bool getModo() { return modo1; }
+    void cambiarModo() { modo = !modo; }
+    bool getModo() { return modo; }
 
 private:
     bool ejes = true;
-    bool modo1 = true; // true = TRS, false = Secuencial
-
-    // Estructura para almacenar cada transformación individual
+    bool modo = true;
     struct Transformacion {
         enum Tipo { TRASLACION, ROTACION_X, ROTACION_Y, ROTACION_Z, ESCALADO };
         Tipo tipo;
-        float param1, param2, param3; // Para traslación (dx,dy,dz), para rotación (ángulo), para escalado (factor)
+        float param1, param2, param3;
     };
-
-    // UNA SOLA secuencia de transformaciones compartida
     std::vector<Transformacion> secuenciaTransformaciones;
-
     struct Objeto3D {
-        // Posición inicial fija de cada objeto
         float tx_inicial = 0.0f, ty_inicial = 0.0f, tz_inicial = 0.0f;
         bool seleccionado = false;
     };
-
     Objeto3D objetos[3];
     int objetoSeleccionado = 0;
-
     void pintar_ejes();
     void renderObjeto1();
     void renderObjeto2();
