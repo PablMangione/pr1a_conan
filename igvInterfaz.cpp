@@ -42,7 +42,6 @@ void igvInterfaz::inicia_bucle_visualizacion() {
 }
 
 void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
-    //CONSEJO PARA EVITAR COPIAS: cambiar los números de las rotaciones, escalados y traslaciones para que la interacción sea otra
     switch (key) {
         case 'e':
         case 'E':

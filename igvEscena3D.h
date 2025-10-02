@@ -7,69 +7,56 @@
 #include <OpenGL/glu.h>
 #else
 #include <GL/glut.h>
-#endif   // defined(__APPLE__) && defined(__MACH__)
+#endif
+
+#include <vector>
 
 class igvEscena3D {
 public:
     igvEscena3D();
-
     ~igvEscena3D() = default;
 
     void visualizar();
-
     bool get_ejes();
-
     void set_ejes(bool _ejes);
-
     void seleccionarObjeto(int indice);
-
     int getObjetoSeleccionado();
-
     void trasladar(float dx, float dy, float dz);
-
     void rotar(char eje, float angulo);
-
     void escalar(float factor);
-
     void cambiarModo() { modo1 = !modo1; }
-
     bool getModo() { return modo1; }
 
 private:
     bool ejes = true;
+    bool modo1 = true; // true = TRS, false = Secuencial
 
-    bool modo1 = true;
+    // Estructura para almacenar cada transformación individual
+    struct Transformacion {
+        enum Tipo { TRASLACION, ROTACION_X, ROTACION_Y, ROTACION_Z, ESCALADO };
+        Tipo tipo;
+        float param1, param2, param3; // Para traslación (dx,dy,dz), para rotación (ángulo), para escalado (factor)
+    };
+
+    // UNA SOLA secuencia de transformaciones compartida
+    std::vector<Transformacion> secuenciaTransformaciones;
 
     struct Objeto3D {
-        float tx = 0.0f, ty = 0.0f, tz = 0.0f;
-        float rx = 0.0f, ry = 0.0f, rz = 0.0f;
-        float sx = 1.0f, sy = 1.0f, sz = 1.0f;
+        // Posición inicial fija de cada objeto
+        float tx_inicial = 0.0f, ty_inicial = 0.0f, tz_inicial = 0.0f;
         bool seleccionado = false;
-        GLfloat matrizTransformacion[16] = {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        };
     };
 
     Objeto3D objetos[3];
-
     int objetoSeleccionado = 0;
 
     void pintar_ejes();
-
     void renderObjeto1();
-
     void renderObjeto2();
-
     void renderObjeto3();
-
-    void aplicarTransformaciones(int indice);
-
+    void aplicarTransformaciones();
     void dibujarIndicadorSeleccion();
-
-    void multiplicarMatrices(GLfloat* nueva, GLfloat* acumulada);
+    void aplicarTransformacion(const Transformacion& t);
 };
 
-#endif   // __IGVESCENA3D
+#endif
