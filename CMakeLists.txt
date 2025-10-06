@@ -10,7 +10,11 @@ add_executable(${PROJECT_NAME}
         igvEscena3D.h
         igvInterfaz.cpp
         igvInterfaz.h
-        pr1a.cpp)
+        pr1a.cpp
+        igvCamara.cpp
+        igvCamara.h
+        igvPunto3D.cpp
+        igvPunto3D.h)
 
 if (LINUX)
     find_path(OPENGL_REGISTRY_INCLUDE_DIRS "GL/glcorearb.h")
