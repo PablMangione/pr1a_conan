@@ -13,15 +13,22 @@
 
 #include <string>
 #include "igvEscena3D.h"
+#include "igvCamara.h"
 
 class igvInterfaz {
 public:
     static igvInterfaz &getInstancia();
+
     ~igvInterfaz() = default;
+
     static void keyboardFunc(unsigned char key, int x, int y);
+
     static void specialFunc(int key, int x, int y);
+
     static void reshapeFunc(int w, int h);
+
     static void displayFunc();
+
     void configura_entorno(int argc, char **argv
                            , int _ancho_ventana, int _alto_ventana
                            , int _pos_X, int _pos_Y
@@ -42,12 +49,16 @@ public:
 
     void set_alto_ventana(int _alto_ventana);
 
+    bool getModoMultiViewport() const { return modoMultiViewport; }
+
+    void toggleMultiViewport() { modoMultiViewport = !modoMultiViewport; }
+
 private:
     int ancho_ventana = 0;
     int alto_ventana = 0;
-
+    igvCamara camara;
+    bool modoMultiViewport = false;
     igvEscena3D escena;
-
     static igvInterfaz *_instancia;
 
     igvInterfaz();
