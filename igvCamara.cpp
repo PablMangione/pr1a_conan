@@ -66,21 +66,35 @@ void igvCamara::aplicar() {
 }
 
 void igvCamara::zoom(double factor) {
-    // TODO: apartado C
+    if (tipo == IGV_PARALELA) {
+        double factor_escala = 1.0 - (factor / 100.0);
+        xwmin *= factor_escala;
+        xwmax *= factor_escala;
+        ywmin *= factor_escala;
+        ywmax *= factor_escala;
+    } else if (tipo == IGV_FRUSTUM) {
+        double factor_escala = 1.0 - (factor / 100.0);
+        xwmin *= factor_escala;
+        xwmax *= factor_escala;
+        ywmin *= factor_escala;
+        ywmax *= factor_escala;
+    } else if (tipo == IGV_PERSPECTIVA) {
+        double factor_escala = 1.0 - (factor / 100.0);
+        angulo *= factor_escala;
+        if (angulo < 10.0) angulo = 10.0;
+        if (angulo > 120.0) angulo = 120.0;
+    }
 }
 
-void igvCamara::activarMovimiento()
-{
+void igvCamara::activarMovimiento() {
     modoMovimientoCamara = !modoMovimientoCamara;
 }
 
-bool igvCamara::getMovimientoActivo() const
-{
+bool igvCamara::getMovimientoActivo() const {
     return modoMovimientoCamara;
 }
 
-void igvCamara::orbita(double incremento)
-{
+void igvCamara::orbita(double incremento) {
     double dx = P0[X] - r[X];
     double dz = P0[Z] - r[Z];
 
@@ -93,13 +107,12 @@ void igvCamara::orbita(double incremento)
     P0[Z] = r[Z] + nuevo_dz;
 }
 
-void igvCamara::cabeceo(double incremento)
-{
+void igvCamara::cabeceo(double incremento) {
     double dx = P0[X] - r[X];
     double dy = P0[Y] - r[Y];
     double dz = P0[Z] - r[Z];
 
-    double dist_xz = sqrt(dx*dx + dz*dz);
+    double dist_xz = sqrt(dx * dx + dz * dz);
 
     double angulo_rad = incremento * M_PI / 180.0;
 
@@ -113,8 +126,7 @@ void igvCamara::cabeceo(double incremento)
     P0[Z] = r[Z] + dz * factor;
 }
 
-void igvCamara::rotacionEjeY(double incremento)
-{
+void igvCamara::rotacionEjeY(double incremento) {
     double vx = r[X] - P0[X];
     double vz = r[Z] - P0[Z];
 
@@ -127,13 +139,12 @@ void igvCamara::rotacionEjeY(double incremento)
     r[Z] = P0[Z] + nuevo_vz;
 }
 
-void igvCamara::desplazarAdelante(double incremento)
-{
+void igvCamara::desplazarAdelante(double incremento) {
     double vx = r[X] - P0[X];
     double vy = r[Y] - P0[Y];
     double vz = r[Z] - P0[Z];
 
-    double longitud = sqrt(vx*vx + vy*vy + vz*vz);
+    double longitud = sqrt(vx * vx + vy * vy + vz * vz);
 
     vx /= longitud;
     vy /= longitud;

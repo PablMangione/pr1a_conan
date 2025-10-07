@@ -40,22 +40,36 @@ private:
 
 public:
     igvCamara() = default;
+
     ~igvCamara() = default;
+
     igvCamara(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V);
+
     void set(igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V);
+
     void set(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V
              , double _xwmin, double _xwmax, double _ywmin
              , double _ywmax, double _znear, double _zfar);
+
     void set(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V
              , double _angulo, double _raspecto, double _znear, double _zfar);
+
     void aplicar(void);
+
     void zoom(double factor);
+
     void activarMovimiento();
+
     bool getMovimientoActivo() const;
+
     void orbita(double incremento);
+
     void cabeceo(double incremento);
+
     void rotacionEjeY(double incremento);
+
     void desplazarAdelante(double incremento);
+
     void aplicarViewport(int viewport_id, int ancho_ventana, int alto_ventana);
 };
 
