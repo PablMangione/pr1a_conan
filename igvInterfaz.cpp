@@ -72,10 +72,16 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             _instancia->escena.rotar('x', -5.0f);
             break;
         case 'y':
-            _instancia->escena.rotar('y', 5.0f);
+            if (_instancia->camara.getMovimientoActivo())
+                _instancia->camara.rotacionEjeY(5.0);
+            else
+                _instancia->escena.rotar('y', 5.0f);
             break;
         case 'Y':
-            _instancia->escena.rotar('y', -5.0f);
+            if (_instancia->camara.getMovimientoActivo())
+                _instancia->camara.rotacionEjeY(-5.0);
+            else
+                _instancia->escena.rotar('y', -5.0f);
             break;
         case 'z':
             _instancia->escena.rotar('z', 5.0f);
@@ -93,6 +99,30 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
         case 'M':
             _instancia->escena.cambiarModo();
             break;
+        case 'c':
+        case 'C':
+            _instancia->camara.activarMovimiento();
+            break;
+        case 'f':
+        case 'F':
+            if (_instancia->camara.getMovimientoActivo())
+                _instancia->camara.desplazarAdelante(0.2);
+            break;
+        case 'b':
+        case 'B':
+            if (_instancia->camara.getMovimientoActivo())
+                _instancia->camara.desplazarAdelante(-0.2);
+            break;
+        case '+':
+            _instancia->camara.zoom(10.0);
+            break;
+        case '-':
+            _instancia->camara.zoom(-10.0);
+            break;
+        case 'p':
+        case 'P':
+            _instancia->cambiaModoMultiViewPort();
+            break;
         case 27:
             exit(1);
     }
@@ -100,19 +130,36 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
 }
 
 void igvInterfaz::specialFunc(int key, int x, int y) {
-    switch (key) {
-        case GLUT_KEY_RIGHT:
-            _instancia->escena.trasladar(0.1f, 0.0f, 0.0f);
-            break;
-        case GLUT_KEY_LEFT:
-            _instancia->escena.trasladar(-0.1f, 0.0f, 0.0f);
-            break;
-        case GLUT_KEY_UP:
-            _instancia->escena.trasladar(0.0f, 0.0f, -0.1f);
-            break;
-        case GLUT_KEY_DOWN:
-            _instancia->escena.trasladar(0.0f, 0.0f, 0.1f);
-            break;
+    if (_instancia->camara.getMovimientoActivo()) {
+        switch (key) {
+            case GLUT_KEY_LEFT:
+                _instancia->camara.orbita(-5.0);
+                break;
+            case GLUT_KEY_RIGHT:
+                _instancia->camara.orbita(5.0);
+                break;
+            case GLUT_KEY_UP:
+                _instancia->camara.cabeceo(5.0);
+                break;
+            case GLUT_KEY_DOWN:
+                _instancia->camara.cabeceo(-5.0);
+                break;
+        }
+    } else {
+        switch (key) {
+            case GLUT_KEY_RIGHT:
+                _instancia->escena.trasladar(0.1f, 0.0f, 0.0f);
+                break;
+            case GLUT_KEY_LEFT:
+                _instancia->escena.trasladar(-0.1f, 0.0f, 0.0f);
+                break;
+            case GLUT_KEY_UP:
+                _instancia->escena.trasladar(0.0f, 0.0f, -0.1f);
+                break;
+            case GLUT_KEY_DOWN:
+                _instancia->escena.trasladar(0.0f, 0.0f, 0.1f);
+                break;
+        }
     }
     glutPostRedisplay();
 }
@@ -125,77 +172,8 @@ void igvInterfaz::reshapeFunc(int w, int h) {
 }
 
 void igvInterfaz::displayFunc() {
-    if (_instancia->modoMultiViewport) {
-        // Modo 4 viewports
-        for (int i = 0; i < 4; i++) {
-            _instancia->camara.aplicarViewport(i,
-                                               _instancia->ancho_ventana,
-                                               _instancia->alto_ventana);
-            _instancia->escena.visualizar();
-
-            // Dibujar bordes del viewport para claridad
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glOrtho(0, 1, 0, 1, -1, 1);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-
-            glDisable(GL_LIGHTING);
-            glColor3f(0.3f, 0.3f, 0.3f);
-            glBegin(GL_LINE_LOOP);
-            glVertex2f(0.0f, 0.0f);
-            glVertex2f(1.0f, 0.0f);
-            glVertex2f(1.0f, 1.0f);
-            glVertex2f(0.0f, 1.0f);
-            glEnd();
-            glEnable(GL_LIGHTING);
-        }
-
-        // Añadir etiquetas de texto para cada vista
-        glDisable(GL_LIGHTING);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluOrtho2D(0, _instancia->ancho_ventana, 0, _instancia->alto_ventana);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-
-        glColor3f(0.0f, 0.0f, 0.0f);
-
-        // Etiqueta ALZADO (superior izquierda)
-        glRasterPos2i(10, _instancia->alto_ventana - 20);
-        const char* texto1 = "ALZADO";
-        for (const char* c = texto1; *c != '\0'; c++) {
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-        }
-
-        // Etiqueta PLANTA (superior derecha)
-        glRasterPos2i(_instancia->ancho_ventana/2 + 10, _instancia->alto_ventana - 20);
-        const char* texto2 = "PLANTA";
-        for (const char* c = texto2; *c != '\0'; c++) {
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-        }
-
-        // Etiqueta PERFIL (inferior izquierda)
-        glRasterPos2i(10, _instancia->alto_ventana/2 - 20);
-        const char* texto3 = "PERFIL";
-        for (const char* c = texto3; *c != '\0'; c++) {
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-        }
-
-        // Etiqueta NORMAL (inferior derecha)
-        glRasterPos2i(_instancia->ancho_ventana/2 + 10, _instancia->alto_ventana/2 - 20);
-        const char* texto4 = "NORMAL";
-        for (const char* c = texto4; *c != '\0'; c++) {
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-        }
-
-        glEnable(GL_LIGHTING);
-    }
-    else {
-        // Modo vista única normal
-        _instancia->camara.aplicar();
-        _instancia->escena.visualizar();
-    }
+    _instancia->escena.visualizar();
+    _instancia->camara.aplicar();
 }
 
 void igvInterfaz::inicializa_callbacks() {

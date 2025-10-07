@@ -51,7 +51,7 @@ public:
 
     bool getModoMultiViewport() const { return modoMultiViewport; }
 
-    void toggleMultiViewport() { modoMultiViewport = !modoMultiViewport; }
+    void cambiaModoMultiViewPort() { modoMultiViewport = !modoMultiViewport; }
 
 private:
     int ancho_ventana = 0;
