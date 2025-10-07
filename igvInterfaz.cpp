@@ -5,6 +5,9 @@
 igvInterfaz *igvInterfaz::_instancia = nullptr;
 
 igvInterfaz::igvInterfaz() {
+    camara.set(igvPunto3D(1.5, 1.0, 2.0),
+               igvPunto3D(0.0, 0.0, 0.0),
+               igvPunto3D(0.0, 1.0, 0.0));
 }
 
 igvInterfaz &igvInterfaz::getInstancia() {
@@ -118,16 +121,81 @@ void igvInterfaz::reshapeFunc(int w, int h) {
     glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     _instancia->set_ancho_ventana(w);
     _instancia->set_alto_ventana(h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1 * 5, 1 * 5, -1 * 5, 1 * 5, -1 * 5, 200);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(1.5, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    _instancia->camara.aplicar();
 }
 
 void igvInterfaz::displayFunc() {
-    _instancia->escena.visualizar();
+    if (_instancia->modoMultiViewport) {
+        // Modo 4 viewports
+        for (int i = 0; i < 4; i++) {
+            _instancia->camara.aplicarViewport(i,
+                                               _instancia->ancho_ventana,
+                                               _instancia->alto_ventana);
+            _instancia->escena.visualizar();
+
+            // Dibujar bordes del viewport para claridad
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(0, 1, 0, 1, -1, 1);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+
+            glDisable(GL_LIGHTING);
+            glColor3f(0.3f, 0.3f, 0.3f);
+            glBegin(GL_LINE_LOOP);
+            glVertex2f(0.0f, 0.0f);
+            glVertex2f(1.0f, 0.0f);
+            glVertex2f(1.0f, 1.0f);
+            glVertex2f(0.0f, 1.0f);
+            glEnd();
+            glEnable(GL_LIGHTING);
+        }
+
+        // Añadir etiquetas de texto para cada vista
+        glDisable(GL_LIGHTING);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, _instancia->ancho_ventana, 0, _instancia->alto_ventana);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        glColor3f(0.0f, 0.0f, 0.0f);
+
+        // Etiqueta ALZADO (superior izquierda)
+        glRasterPos2i(10, _instancia->alto_ventana - 20);
+        const char* texto1 = "ALZADO";
+        for (const char* c = texto1; *c != '\0'; c++) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+        }
+
+        // Etiqueta PLANTA (superior derecha)
+        glRasterPos2i(_instancia->ancho_ventana/2 + 10, _instancia->alto_ventana - 20);
+        const char* texto2 = "PLANTA";
+        for (const char* c = texto2; *c != '\0'; c++) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+        }
+
+        // Etiqueta PERFIL (inferior izquierda)
+        glRasterPos2i(10, _instancia->alto_ventana/2 - 20);
+        const char* texto3 = "PERFIL";
+        for (const char* c = texto3; *c != '\0'; c++) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+        }
+
+        // Etiqueta NORMAL (inferior derecha)
+        glRasterPos2i(_instancia->ancho_ventana/2 + 10, _instancia->alto_ventana/2 - 20);
+        const char* texto4 = "NORMAL";
+        for (const char* c = texto4; *c != '\0'; c++) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+        }
+
+        glEnable(GL_LIGHTING);
+    }
+    else {
+        // Modo vista única normal
+        _instancia->camara.aplicar();
+        _instancia->escena.visualizar();
+    }
 }
 
 void igvInterfaz::inicializa_callbacks() {
