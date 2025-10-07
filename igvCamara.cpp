@@ -2,131 +2,144 @@
 
 #include "igvCamara.h"
 
-// Métodos constructores
 
-/**
- * Constructor parametrizado
- * @param _tipo Tipo de cámara (IGV_PARALELA, IGV_FRUSTUM o IGV_PERSPECTIVA)
- * @param _P0 Posición de la cámara (punto de visión)
- * @param _r Punto al que mira la cámara (punto de referencia)
- * @param _V Vector que indica la vertical
- * @pre Se asume que todos los parámetros tienen valores válidos
- * @post Los atributos de la nueva cámara serán iguales a los parámetros que se
- *       le pasan
- */
-igvCamara::igvCamara ( tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
-   , igvPunto3D _V ): P0 ( _P0 ), r ( _r ), V ( _V )
-                      , tipo ( _tipo )
-{ }
-
-// Métodos públicos
-/**
- * Define la posición de la cámara
- * @param _P0 Posición de la cámara (punto de visión)
- * @param _r Punto al que mira la cámara (punto de referencia)
- * @param _V Vector que indica la vertical
- * @pre Se asume que todos los parámetros tienen valores válidos
- * @post Los atributos de la cámara cambian a los valores pasados como parámetro
- */
-void igvCamara::set ( igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V )
-{  P0 = _P0;
-   r  = _r;
-   V  = _V;
+igvCamara::igvCamara(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
+                     , igvPunto3D _V) : P0(_P0), r(_r), V(_V)
+                                        , tipo(_tipo) {
 }
 
-/**
- * Define una cámara de tipo paralela o frustum
- * @param _tipo Tipo de la cámara (IGV_PARALELA o IGV_FRUSTUM)
- * @param _P0 Posición de la cámara
- * @param _r Punto al que mira la cámara
- * @param _V Vector que indica la vertical
- * @param _xwmin Coordenada X mínima del frustum
- * @param _xwmax Coordenada X máxima del frustum
- * @param _ywmin Coordenada Y mínima del frustum
- * @param _ywmax Coordenada Y máxima del frustum
- * @param _znear Distancia de la cámara al plano Z near
- * @param _zfar Distancia de la cámara al plano Z far
- * @pre Se asume que todos los parámetros tienen valores válidos
- * @post Los atributos de la cámara cambian a los valores pasados como parámetro
- */
-void igvCamara::set ( tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
-                      , igvPunto3D _V, double _xwmin, double _xwmax, double _ywmin
-                      , double _ywmax, double _znear, double _zfar )
-{  tipo = _tipo;
-
-   P0 = _P0;
-   r = _r;
-   V = _V;
-
-   xwmin = _xwmin;
-   xwmax = _xwmax;
-   ywmin = _ywmin;
-   ywmax = _ywmax;
-   znear = _znear;
-   zfar = _zfar;
+void igvCamara::set(igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V) {
+    P0 = _P0;
+    r = _r;
+    V = _V;
 }
 
-/**
- * Define una cámara de tipo perspectiva
- * @param _tipo Tipo de la cámara (IGV_PERSPECTIVA)
- * @param _P0 Posición de la cámara
- * @param _r Punto al que mira la cámara
- * @param _V Vector que indica la vertical
- * @param _angulo Ángulo de apertura
- * @param _raspecto Razón de aspecto
- * @param _znear Distancia de la cámara al plano Z near
- * @param _zfar Distancia de la cámara al plano Z far
- * @pre Se asume que todos los parámetros tienen valores válidos
- * @post Los atributos de la cámara cambian a los valores que se pasan como
- *       parámetros
- */
-void igvCamara::set ( tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
-                      , igvPunto3D _V, double _angulo, double _raspecto
-                      , double _znear, double _zfar )
-{  tipo = _tipo;
+void igvCamara::set(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
+                    , igvPunto3D _V, double _xwmin, double _xwmax, double _ywmin
+                    , double _ywmax, double _znear, double _zfar) {
+    tipo = _tipo;
 
-   P0 = _P0;
-   r = _r;
-   V = _V;
+    P0 = _P0;
+    r = _r;
+    V = _V;
 
-   angulo = _angulo;
-   raspecto = _raspecto;
-   znear = _znear;
-   zfar = _zfar;
+    xwmin = _xwmin;
+    xwmax = _xwmax;
+    ywmin = _ywmin;
+    ywmax = _ywmax;
+    znear = _znear;
+    zfar = _zfar;
 }
 
-/**
- * Aplica a los objetos de la escena la transformación de visión y la
- * transformación de proyección asociadas a los parámetros de la cámara
- */
-void igvCamara::aplicar ()
-{  glMatrixMode ( GL_PROJECTION );
-   glLoadIdentity ();
+void igvCamara::set(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
+                    , igvPunto3D _V, double _angulo, double _raspecto
+                    , double _znear, double _zfar) {
+    tipo = _tipo;
 
-   if ( tipo == IGV_PARALELA )
-   {
-      glOrtho ( xwmin, xwmax, ywmin, ywmax, znear, zfar );
-   }
-   if ( tipo == IGV_FRUSTUM )
-   {
-      glFrustum ( xwmin, xwmax, ywmin, ywmax, znear, zfar );
-   }
-   if ( tipo == IGV_PERSPECTIVA )
-   {
-      gluPerspective ( angulo, raspecto, znear, zfar );
-   }
+    P0 = _P0;
+    r = _r;
+    V = _V;
 
-   glMatrixMode ( GL_MODELVIEW );
-   glLoadIdentity ();
-   gluLookAt ( P0[X], P0[Y], P0[Z], r[X], r[Y], r[Z], V[X], V[Y], V[Z] );
+    angulo = _angulo;
+    raspecto = _raspecto;
+    znear = _znear;
+    zfar = _zfar;
 }
 
-/**
- * Realiza un zoom sobre la cámara
- * @param factor Factor (en tanto por 100) que se aplica al zoom. Si el valor es
- *        positivo, se aumenta el zoom. Si es negativo, se reduce.
- * @pre Se asume que el parámetro tiene un valor válido
- */
-void igvCamara::zoom ( double factor )
-{  // TODO: apartado C
+void igvCamara::aplicar() {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    if (tipo == IGV_PARALELA) {
+        glOrtho(xwmin, xwmax, ywmin, ywmax, znear, zfar);
+    }
+    if (tipo == IGV_FRUSTUM) {
+        glFrustum(xwmin, xwmax, ywmin, ywmax, znear, zfar);
+    }
+    if (tipo == IGV_PERSPECTIVA) {
+        gluPerspective(angulo, raspecto, znear, zfar);
+    }
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(P0[X], P0[Y], P0[Z], r[X], r[Y], r[Z], V[X], V[Y], V[Z]);
+}
+
+void igvCamara::zoom(double factor) {
+    // TODO: apartado C
+}
+
+void igvCamara::activarMovimiento()
+{
+    modoMovimientoCamara = !modoMovimientoCamara;
+}
+
+bool igvCamara::getMovimientoActivo() const
+{
+    return modoMovimientoCamara;
+}
+
+void igvCamara::orbita(double incremento)
+{
+    double dx = P0[X] - r[X];
+    double dz = P0[Z] - r[Z];
+
+    double angulo_rad = incremento * M_PI / 180.0;
+
+    double nuevo_dx = dx * cos(angulo_rad) - dz * sin(angulo_rad);
+    double nuevo_dz = dx * sin(angulo_rad) + dz * cos(angulo_rad);
+
+    P0[X] = r[X] + nuevo_dx;
+    P0[Z] = r[Z] + nuevo_dz;
+}
+
+void igvCamara::cabeceo(double incremento)
+{
+    double dx = P0[X] - r[X];
+    double dy = P0[Y] - r[Y];
+    double dz = P0[Z] - r[Z];
+
+    double dist_xz = sqrt(dx*dx + dz*dz);
+
+    double angulo_rad = incremento * M_PI / 180.0;
+
+    double nuevo_dy = dy * cos(angulo_rad) - dist_xz * sin(angulo_rad);
+    double nueva_dist_xz = dy * sin(angulo_rad) + dist_xz * cos(angulo_rad);
+
+    double factor = nueva_dist_xz / dist_xz;
+
+    P0[X] = r[X] + dx * factor;
+    P0[Y] = r[Y] + nuevo_dy;
+    P0[Z] = r[Z] + dz * factor;
+}
+
+void igvCamara::rotacionEjeY(double incremento)
+{
+    double vx = r[X] - P0[X];
+    double vz = r[Z] - P0[Z];
+
+    double angulo_rad = incremento * M_PI / 180.0;
+
+    double nuevo_vx = vx * cos(angulo_rad) - vz * sin(angulo_rad);
+    double nuevo_vz = vx * sin(angulo_rad) + vz * cos(angulo_rad);
+
+    r[X] = P0[X] + nuevo_vx;
+    r[Z] = P0[Z] + nuevo_vz;
+}
+
+void igvCamara::desplazarAdelante(double incremento)
+{
+    double vx = r[X] - P0[X];
+    double vy = r[Y] - P0[Y];
+    double vz = r[Z] - P0[Z];
+
+    double longitud = sqrt(vx*vx + vy*vy + vz*vz);
+
+    vx /= longitud;
+    vy /= longitud;
+    vz /= longitud;
+
+    P0[X] += vx * incremento;
+    P0[Y] += vy * incremento;
+    P0[Z] += vz * incremento;
 }
