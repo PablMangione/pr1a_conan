@@ -27,15 +27,15 @@ void igvEscena3D::pintar_ejes() {
     GLfloat azul[] = {0, 0, 1, 1.0};
 
     glBegin(GL_LINES);
-    glMaterialfv(GL_FRONT, GL_EMISSION, rojo);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, rojo);
     glVertex3f(1000, 0, 0);
     glVertex3f(-1000, 0, 0);
 
-    glMaterialfv(GL_FRONT, GL_EMISSION, verde);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, verde);
     glVertex3f(0, 1000, 0);
     glVertex3f(0, -1000, 0);
 
-    glMaterialfv(GL_FRONT, GL_EMISSION, azul);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, azul);
     glVertex3f(0, 0, 1000);
     glVertex3f(0, 0, -1000);
     glEnd();
