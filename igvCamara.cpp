@@ -66,13 +66,7 @@ void igvCamara::aplicar() {
 }
 
 void igvCamara::zoom(double factor) {
-    if (tipo == IGV_PARALELA) {
-        double factor_escala = 1.0 - (factor / 100.0);
-        xwmin *= factor_escala;
-        xwmax *= factor_escala;
-        ywmin *= factor_escala;
-        ywmax *= factor_escala;
-    } else if (tipo == IGV_FRUSTUM) {
+    if (tipo == IGV_PARALELA || tipo == IGV_FRUSTUM) {
         double factor_escala = 1.0 - (factor / 100.0);
         xwmin *= factor_escala;
         xwmax *= factor_escala;
