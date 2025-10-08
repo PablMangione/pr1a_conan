@@ -69,6 +69,8 @@ public:
     void rotacionEjeY(double incremento);
 
     void desplazarAdelante(double incremento);
+
+    void aplicarViewport(int viewport_id, int ancho_ventana, int alto_ventana);
 };
 
 #endif   // __IGVCAMARA

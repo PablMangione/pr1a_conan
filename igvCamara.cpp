@@ -148,3 +148,62 @@ void igvCamara::desplazarAdelante(double incremento) {
     P0[Y] += vy * incremento;
     P0[Z] += vz * incremento;
 }
+
+void igvCamara::aplicarViewport(int viewport_id, int ancho_ventana, int alto_ventana) {
+    int mitad_ancho = ancho_ventana / 2;
+    int mitad_alto = alto_ventana / 2;
+
+    // Configurar el viewport según la posición
+    switch(viewport_id) {
+        case 0: // Superior izquierda - ALZADO
+            glViewport(0, mitad_alto, mitad_ancho, mitad_alto);
+            break;
+        case 1: // Superior derecha - PLANTA
+            glViewport(mitad_ancho, mitad_alto, mitad_ancho, mitad_alto);
+            break;
+        case 2: // Inferior izquierda - PERFIL
+            glViewport(0, 0, mitad_ancho, mitad_alto);
+            break;
+        case 3: // Inferior derecha - NORMAL
+            glViewport(mitad_ancho, 0, mitad_ancho, mitad_alto);
+            break;
+    }
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    if (viewport_id == 3) {
+        if (tipo == IGV_PARALELA) {
+            glOrtho(xwmin, xwmax, ywmin, ywmax, znear, zfar);
+        }
+        else if (tipo == IGV_FRUSTUM) {
+            glFrustum(xwmin, xwmax, ywmin, ywmax, znear, zfar);
+        }
+        else if (tipo == IGV_PERSPECTIVA) {
+            double aspecto_viewport = (double)mitad_ancho / (double)mitad_alto;
+            gluPerspective(angulo, aspecto_viewport, znear, zfar);
+        }
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        gluLookAt(P0[X], P0[Y], P0[Z], r[X], r[Y], r[Z], V[X], V[Y], V[Z]);
+    }
+    else {
+        double rango = 5.0;
+        glOrtho(-rango, rango, -rango, rango, -rango, rango * 2);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        switch(viewport_id) {
+            case 0: // ALZADO - Vista frontal (desde +Z)
+                gluLookAt(0.0, 0.0, 6.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+                break;
+            case 1: // PLANTA - Vista desde arriba (desde +Y)
+                gluLookAt(0.0, 6.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0);
+                break;
+            case 2: // PERFIL - Vista lateral (desde +X)
+                gluLookAt(6.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+                break;
+        }
+    }
+}

@@ -143,7 +143,6 @@ void igvEscena3D::dibujarIndicadorSeleccion() {
 }
 
 void igvEscena3D::visualizar() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GLfloat light0[] = {10, 8, 9, 1};
     glLightfv(GL_LIGHT0, GL_POSITION, light0);
     glEnable(GL_LIGHT0);
@@ -170,7 +169,6 @@ void igvEscena3D::visualizar() {
     }
     dibujarIndicadorSeleccion();
     glPopMatrix();
-    glutSwapBuffers();
 }
 
 void igvEscena3D::trasladar(float dx, float dy, float dz) {

@@ -172,8 +172,24 @@ void igvInterfaz::reshapeFunc(int w, int h) {
 }
 
 void igvInterfaz::displayFunc() {
-    _instancia->escena.visualizar();
-    _instancia->camara.aplicar();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (_instancia->modoMultiViewport) {
+        for (int i = 0; i < 4; i++) {
+            _instancia->camara.aplicarViewport(i,
+                                               _instancia->ancho_ventana,
+                                               _instancia->alto_ventana);
+
+            _instancia->escena.visualizar();
+        }
+    }
+    else {
+        glViewport(0, 0, _instancia->ancho_ventana, _instancia->alto_ventana);
+        _instancia->camara.aplicar();
+        _instancia->escena.visualizar();
+    }
+
+    glutSwapBuffers();
 }
 
 void igvInterfaz::inicializa_callbacks() {
