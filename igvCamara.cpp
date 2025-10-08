@@ -148,4 +148,3 @@ void igvCamara::desplazarAdelante(double incremento) {
     P0[Y] += vy * incremento;
     P0[Z] += vz * incremento;
 }
-

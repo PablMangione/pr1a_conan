@@ -69,7 +69,6 @@ public:
     void rotacionEjeY(double incremento);
 
     void desplazarAdelante(double incremento);
-
 };
 
 #endif   // __IGVCAMARA
