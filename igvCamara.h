@@ -47,6 +47,8 @@ public:
 
     void set(igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V);
 
+    void set(tipoCamara _tipo);
+
     void set(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r, igvPunto3D _V
              , double _xwmin, double _xwmax, double _ywmin
              , double _ywmax, double _znear, double _zfar);
@@ -61,6 +63,8 @@ public:
     void activarMovimiento();
 
     bool getMovimientoActivo() const;
+
+    tipoCamara getTipo() const;
 
     void orbita(double incremento);
 

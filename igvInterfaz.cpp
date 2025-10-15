@@ -121,6 +121,11 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'p':
         case 'P':
+            if (_instancia->camara.getTipo() == IGV_PARALELA)
+                _instancia->camara.set(IGV_PERSPECTIVA);
+            else _instancia->camara.set(IGV_PARALELA);
+            break;
+        case '4':
             _instancia->cambiaModoMultiViewPort();
             break;
         case 27:

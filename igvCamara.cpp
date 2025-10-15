@@ -46,6 +46,11 @@ void igvCamara::set(tipoCamara _tipo, igvPunto3D _P0, igvPunto3D _r
     zfar = _zfar;
 }
 
+void igvCamara::set(tipoCamara _tipo) {
+    tipo = _tipo;
+}
+
+
 void igvCamara::aplicar() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -86,6 +91,10 @@ void igvCamara::activarMovimiento() {
 
 bool igvCamara::getMovimientoActivo() const {
     return modoMovimientoCamara;
+}
+
+tipoCamara igvCamara::getTipo() const {
+    return tipo;
 }
 
 void igvCamara::orbita(double incremento) {
