@@ -15,6 +15,10 @@ add_executable(${PROJECT_NAME}
         igvCamara.h
         igvPunto3D.cpp
         igvPunto3D.h
+        igvMallaTriangulos.cpp
+        igvMallaTriangulos.h
+        igvCilindro.cpp
+        igvCilindro.h
 )
 
 if (LINUX)
