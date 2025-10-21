@@ -10,12 +10,13 @@
 #endif
 
 #include <vector>
+#include "igvMallaTriangulos.h"
 
 class igvEscena3D {
 public:
     igvEscena3D();
 
-    ~igvEscena3D() = default;
+    ~igvEscena3D();
 
     void visualizar();
 
@@ -23,53 +24,13 @@ public:
 
     void set_ejes(bool _ejes);
 
-    void seleccionarObjeto(int indice);
-
-    int getObjetoSeleccionado();
-
-    void trasladar(float dx, float dy, float dz);
-
-    void rotar(char eje, float angulo);
-
-    void escalar(float factor);
-
-    void cambiarModo() { modo = !modo; }
-    bool getModo() { return modo; }
-
 private:
     bool ejes = true;
-    bool modo = true;
-
-    struct Transformacion {
-        enum Tipo { TRASLACION, ROTACION_X, ROTACION_Y, ROTACION_Z, ESCALADO };
-
-        Tipo tipo;
-        float param1, param2, param3;
-    };
-
-    std::vector<Transformacion> secuenciaTransformaciones;
-
-    struct Objeto3D {
-        float tx_inicial = 0.0f, ty_inicial = 0.0f, tz_inicial = 0.0f;
-        bool seleccionado = false;
-    };
-
-    Objeto3D objetos[3];
-    int objetoSeleccionado = 0;
+    igvMallaTriangulos* malla = nullptr;
 
     void pintar_ejes();
 
-    void renderObjeto1();
-
-    void renderObjeto2();
-
-    void renderObjeto3();
-
-    void aplicarTransformaciones();
-
-    void dibujarIndicadorSeleccion();
-
-    void aplicarTransformacion(const Transformacion &t);
+    igvMallaTriangulos* getMalla() const { return malla; }
 };
 
 #endif

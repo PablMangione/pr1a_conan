@@ -50,55 +50,7 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
         case 'E':
             _instancia->escena.set_ejes(!_instancia->escena.get_ejes());
             break;
-        case '1':
-            _instancia->escena.seleccionarObjeto(0);
-            break;
-        case '2':
-            _instancia->escena.seleccionarObjeto(1);
-            break;
-        case '3':
-            _instancia->escena.seleccionarObjeto(2);
-            break;
-        case 'u':
-            _instancia->escena.trasladar(0.0f, 0.1f, 0.0f);
-            break;
-        case 'U':
-            _instancia->escena.trasladar(0.0f, -0.1f, 0.0f);
-            break;
-        case 'x':
-            _instancia->escena.rotar('x', 5.0f);
-            break;
-        case 'X':
-            _instancia->escena.rotar('x', -5.0f);
-            break;
-        case 'y':
-            if (_instancia->camara.getMovimientoActivo())
-                _instancia->camara.rotacionEjeY(5.0);
-            else
-                _instancia->escena.rotar('y', 5.0f);
-            break;
-        case 'Y':
-            if (_instancia->camara.getMovimientoActivo())
-                _instancia->camara.rotacionEjeY(-5.0);
-            else
-                _instancia->escena.rotar('y', -5.0f);
-            break;
-        case 'z':
-            _instancia->escena.rotar('z', 5.0f);
-            break;
-        case 'Z':
-            _instancia->escena.rotar('z', -5.0f);
-            break;
-        case 's':
-            _instancia->escena.escalar(1.1f);
-            break;
-        case 'S':
-            _instancia->escena.escalar(0.9f);
-            break;
-        case 'm':
-        case 'M':
-            _instancia->escena.cambiarModo();
-            break;
+
         case 'c':
         case 'C':
             _instancia->camara.activarMovimiento();
@@ -135,37 +87,21 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
 }
 
 void igvInterfaz::specialFunc(int key, int x, int y) {
-    if (_instancia->camara.getMovimientoActivo()) {
-        switch (key) {
-            case GLUT_KEY_LEFT:
-                _instancia->camara.orbita(-5.0);
-                break;
-            case GLUT_KEY_RIGHT:
-                _instancia->camara.orbita(5.0);
-                break;
-            case GLUT_KEY_UP:
-                _instancia->camara.cabeceo(5.0);
-                break;
-            case GLUT_KEY_DOWN:
-                _instancia->camara.cabeceo(-5.0);
-                break;
-        }
-    } else {
-        switch (key) {
-            case GLUT_KEY_RIGHT:
-                _instancia->escena.trasladar(0.1f, 0.0f, 0.0f);
-                break;
-            case GLUT_KEY_LEFT:
-                _instancia->escena.trasladar(-0.1f, 0.0f, 0.0f);
-                break;
-            case GLUT_KEY_UP:
-                _instancia->escena.trasladar(0.0f, 0.0f, -0.1f);
-                break;
-            case GLUT_KEY_DOWN:
-                _instancia->escena.trasladar(0.0f, 0.0f, 0.1f);
-                break;
-        }
+    switch (key) {
+        case GLUT_KEY_LEFT:
+            _instancia->camara.orbita(-5.0);
+            break;
+        case GLUT_KEY_RIGHT:
+            _instancia->camara.orbita(5.0);
+            break;
+        case GLUT_KEY_UP:
+            _instancia->camara.cabeceo(5.0);
+            break;
+        case GLUT_KEY_DOWN:
+            _instancia->camara.cabeceo(-5.0);
+            break;
     }
+
     glutPostRedisplay();
 }
 
@@ -187,8 +123,7 @@ void igvInterfaz::displayFunc() {
 
             _instancia->escena.visualizar();
         }
-    }
-    else {
+    } else {
         glViewport(0, 0, _instancia->ancho_ventana, _instancia->alto_ventana);
         _instancia->camara.aplicar();
         _instancia->escena.visualizar();
