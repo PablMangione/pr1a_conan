@@ -5,9 +5,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-/**
- * Constructor por defecto
- */
 igvEsfera::igvEsfera() : igvMallaTriangulos()
 {
 }
@@ -124,9 +121,6 @@ igvEsfera::igvEsfera(float radio, int meridianos, int paralelos)
     }
 }
 
-/**
- * Destructor
- */
 igvEsfera::~igvEsfera()
 {
 }

@@ -26,11 +26,9 @@ public:
 
 private:
     bool ejes = true;
-    igvMallaTriangulos* malla = nullptr;
+    std::vector<igvMallaTriangulos *> primitivas;
 
     void pintar_ejes();
-
-    igvMallaTriangulos* getMalla() const { return malla; }
 };
 
 #endif
