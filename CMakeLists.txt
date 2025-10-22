@@ -19,6 +19,16 @@ add_executable(${PROJECT_NAME}
         igvMallaTriangulos.h
         igvCilindro.cpp
         igvCilindro.h
+        igvCubo.cpp
+        igvCubo.h
+        igvDisco.cpp
+        igvDisco.h
+        igvOctaedro.cpp
+        igvOctaedro.h
+        igvTetraedro.cpp
+        igvTetraedro.h
+        igvEsfera.cpp
+        igvEsfera.h
 )
 
 if (LINUX)
