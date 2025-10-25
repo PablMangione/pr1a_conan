@@ -107,3 +107,13 @@ bool igvEscena3D::get_ejes() {
 void igvEscena3D::set_ejes(bool _ejes) {
     ejes = _ejes;
 }
+
+void igvEscena3D::cambiaNormalesSombreado() {
+    for (auto primitiva: primitivas) {
+        if (primitiva != nullptr) {
+            primitiva->cambiarnormales();
+            primitiva->cambiarvis();
+        }
+    }
+}
+

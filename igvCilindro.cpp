@@ -14,7 +14,6 @@ igvCilindro::igvCilindro(float r, float a, int divU, int divV) {
 
     num_vertices = divU * (divV + 1);
     vertices = new float[num_vertices * 3];
-    normales = new float[num_vertices * 3];
 
     num_triangulos = divU * divV * 2;
     triangulos = new unsigned int[num_triangulos * 3];
@@ -29,9 +28,6 @@ igvCilindro::igvCilindro(float r, float a, int divU, int divV) {
         vertices[i * 3 + 1] = 0.0f;
         vertices[i * 3 + 2] = r * sx;
 
-        normales[i * 3 + 0] = cx;
-        normales[i * 3 + 1] = 0.0f;
-        normales[i * 3 + 2] = sx;
     }
 
     for (int j = 0; j < divV; ++j) {
@@ -43,9 +39,6 @@ igvCilindro::igvCilindro(float r, float a, int divU, int divV) {
             vertices[baseJ + 0] = vertices[base0 + 0];
             vertices[baseJ + 1] = y;
             vertices[baseJ + 2] = vertices[base0 + 2];
-            normales[baseJ + 0] = normales[base0 + 0];
-            normales[baseJ + 1] = 0.0f;
-            normales[baseJ + 2] = normales[base0 + 2];
         }
     }
 
@@ -65,7 +58,9 @@ igvCilindro::igvCilindro(float r, float a, int divU, int divV) {
             triangulos[t++] = i3;
         }
     }
+    calcularNormalesVertices();
 }
 
 igvCilindro::~igvCilindro() {
 }
+

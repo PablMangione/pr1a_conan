@@ -15,7 +15,6 @@
 
 class igvMallaTriangulos {
 protected:
-    // Atributos
     long int num_vertices = 0;
     float *vertices = nullptr;
     float *normales = nullptr;
@@ -24,6 +23,7 @@ protected:
     unsigned int *triangulos = nullptr;
     bool usarnormales;
     bool gouraud;
+    void calcularNormalesVertices();
 
 public:
     igvMallaTriangulos() = default;

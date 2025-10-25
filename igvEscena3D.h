@@ -24,9 +24,12 @@ public:
 
     void set_ejes(bool _ejes);
 
+    void cambiaNormalesSombreado();
+
 private:
     bool ejes = true;
     std::vector<igvMallaTriangulos *> primitivas;
+
 
     void pintar_ejes();
 };

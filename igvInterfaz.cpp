@@ -80,6 +80,10 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
         case '4':
             _instancia->cambiaModoMultiViewPort();
             break;
+        case 'g':
+        case 'G':
+            _instancia->escena.cambiaNormalesSombreado();
+            break;
         case 27:
             exit(1);
     }
