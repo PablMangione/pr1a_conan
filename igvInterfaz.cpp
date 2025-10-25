@@ -5,7 +5,7 @@
 igvInterfaz *igvInterfaz::_instancia = nullptr;
 
 igvInterfaz::igvInterfaz() {
-    camara.set(igvPunto3D(1.5, 1.0, 2.0),
+    camara.set(igvPunto3D(3.5, 4.0, 10.0),
                igvPunto3D(0.0, 0.0, 0.0),
                igvPunto3D(0.0, 1.0, 0.0));
 }
@@ -82,7 +82,8 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'g':
         case 'G':
-            _instancia->escena.cambiaNormalesSombreado();
+            _instancia->escena.cambiarModoSombreado();
+            _instancia->escena.cambiarUsoNormales();
             break;
         case 27:
             exit(1);

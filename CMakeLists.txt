@@ -29,6 +29,8 @@ add_executable(${PROJECT_NAME}
         igvTetraedro.h
         igvEsfera.cpp
         igvEsfera.h
+        igvModeloArticulado.h
+        igvModeloArticulado.cpp
 )
 
 if (LINUX)

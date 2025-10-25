@@ -9,27 +9,23 @@
 #include <GL/glut.h>
 #endif
 
-#include <vector>
-#include "igvMallaTriangulos.h"
+#include "igvModeloArticulado.h"
 
 class igvEscena3D {
 public:
     igvEscena3D();
-
     ~igvEscena3D();
 
     void visualizar();
-
     bool get_ejes();
-
     void set_ejes(bool _ejes);
 
-    void cambiaNormalesSombreado();
+    void cambiarModoSombreado();
+    void cambiarUsoNormales();
 
 private:
     bool ejes = true;
-    std::vector<igvMallaTriangulos *> primitivas;
-
+    igvModeloArticulado modelo;
 
     void pintar_ejes();
 };
