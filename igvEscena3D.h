@@ -20,11 +20,9 @@ public:
     bool get_ejes();
     void set_ejes(bool _ejes);
 
-    // Métodos para interactuar con el modelo
     void cambiarModoSombreado();
     void cambiarUsoNormales();
 
-    // Métodos para controlar la lámpara
     void rotarBaseLampara(float incremento);
     void rotarBrazo1Lampara(float incremento);
     void rotarBrazo2Lampara(float incremento);

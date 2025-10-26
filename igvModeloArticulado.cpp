@@ -2,8 +2,8 @@
 #include "igvCilindro.h"
 #include "igvEsfera.h"
 #include "igvCono.h"
+#include "igvDisco.h"
 #include <cmath>
-
 
 igvModeloArticulado::igvModeloArticulado() {
     anguloBase = 0.0f;
@@ -25,20 +25,16 @@ igvModeloArticulado::igvModeloArticulado() {
 }
 
 void igvModeloArticulado::crearPrimitivas() {
-    base = new igvCilindro(dim.radioBase, dim.alturaBase, 30, 5);
-    brazo1 = new igvCilindro(dim.radioBrazo1, dim.longitudBrazo1, 20, 10);
-    articulacion1 = new igvEsfera(dim.radioArticulacion, 20, 20);
-    brazo2 = new igvCilindro(dim.radioBrazo2, dim.longitudBrazo2, 20, 10);
-    articulacion2 = new igvEsfera(dim.radioArticulacion * 0.8f, 20, 20);
+    cilindro = new igvCilindro(1.0f, 1.0f, 20, 10);
+    esfera = new igvEsfera(1.0f, 20, 20);
+    disco = new igvDisco(1.0f, 30);
     pantalla = new igvCono(dim.radioPantalla, dim.alturaPantalla, 30);
 }
 
 igvModeloArticulado::~igvModeloArticulado() {
-    if (base) delete base;
-    if (brazo1) delete brazo1;
-    if (articulacion1) delete articulacion1;
-    if (brazo2) delete brazo2;
-    if (articulacion2) delete articulacion2;
+    if (cilindro) delete cilindro;
+    if (esfera) delete esfera;
+    if (disco) delete disco;
     if (pantalla) delete pantalla;
 }
 
@@ -47,7 +43,20 @@ void igvModeloArticulado::dibujarBase() {
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorBase);
 
     glPushMatrix();
-        base->visualizar();
+        glPushMatrix();
+            glScalef(dim.radioBase, dim.alturaBase, dim.radioBase);
+            cilindro->visualizar();
+        glPopMatrix();
+        glPushMatrix();
+            glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+            glScalef(dim.radioBase, 1.0f, dim.radioBase);
+            disco->visualizar();
+        glPopMatrix();
+        glPushMatrix();
+            glTranslatef(0.0f, dim.alturaBase, 0.0f);
+            glScalef(dim.radioBase, 1.0f, dim.radioBase);
+            disco->visualizar();
+        glPopMatrix();
     glPopMatrix();
 }
 
@@ -58,7 +67,8 @@ void igvModeloArticulado::dibujarBrazo1() {
     glPushMatrix();
         glTranslatef(0.0f, dim.alturaBase, 0.0f);
         glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
-        brazo1->visualizar();
+        glScalef(dim.radioBrazo1, dim.longitudBrazo1, dim.radioBrazo1);
+        cilindro->visualizar();
     glPopMatrix();
 }
 
@@ -70,23 +80,22 @@ void igvModeloArticulado::dibujarArticulacion1() {
         glTranslatef(0.0f, dim.alturaBase, 0.0f);
         glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
         glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
-        articulacion1->visualizar();
+        glScalef(dim.radioArticulacion, dim.radioArticulacion, dim.radioArticulacion);
+        esfera->visualizar();
     glPopMatrix();
 }
 
 void igvModeloArticulado::dibujarBrazo2() {
-    GLfloat colorBrazo[] = {0.8f, 0.8f, 0.2f, 1.0f};  // Amarillo
+    GLfloat colorBrazo[] = {0.8f, 0.8f, 0.2f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorBrazo);
 
     glPushMatrix();
-
         glTranslatef(0.0f, dim.alturaBase, 0.0f);
-
-
         glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
         glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
         glRotatef(anguloBrazo2, 0.0f, 0.0f, 1.0f);
-        brazo2->visualizar();
+        glScalef(dim.radioBrazo2, dim.longitudBrazo2, dim.radioBrazo2);
+        cilindro->visualizar();
     glPopMatrix();
 }
 
@@ -101,13 +110,17 @@ void igvModeloArticulado::dibujarArticulacion2() {
         glRotatef(anguloBrazo2, 0.0f, 0.0f, 1.0f);
         glTranslatef(0.0f, dim.longitudBrazo2, 0.0f);
 
-        articulacion2->visualizar();
+        float radio2 = dim.radioArticulacion * 0.8f;
+        glScalef(radio2, radio2, radio2);
+        esfera->visualizar();
     glPopMatrix();
 }
+
 
 void igvModeloArticulado::dibujarPantalla() {
     GLfloat colorPantalla[] = {0.9f, 0.9f, 0.9f, 1.0f};
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorPantalla);
+
     glPushMatrix();
         glTranslatef(0.0f, dim.alturaBase, 0.0f);
         glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
@@ -117,6 +130,7 @@ void igvModeloArticulado::dibujarPantalla() {
         glRotatef(anguloPantalla, 0.0f, 0.0f, 1.0f);
         glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
         glTranslatef(0.0f, -dim.alturaPantalla, 0.0f);
+
         pantalla->visualizar();
     glPopMatrix();
 }
@@ -134,20 +148,16 @@ void igvModeloArticulado::visualizar() {
 }
 
 void igvModeloArticulado::cambiarModoSombreado() {
-    if (base) base->cambiarvis();
-    if (brazo1) brazo1->cambiarvis();
-    if (articulacion1) articulacion1->cambiarvis();
-    if (brazo2) brazo2->cambiarvis();
-    if (articulacion2) articulacion2->cambiarvis();
+    if (cilindro) cilindro->cambiarvis();
+    if (esfera) esfera->cambiarvis();
+    if (disco) disco->cambiarvis();
     if (pantalla) pantalla->cambiarvis();
 }
 
 void igvModeloArticulado::cambiarUsoNormales() {
-    if (base) base->cambiarnormales();
-    if (brazo1) brazo1->cambiarnormales();
-    if (articulacion1) articulacion1->cambiarnormales();
-    if (brazo2) brazo2->cambiarnormales();
-    if (articulacion2) articulacion2->cambiarnormales();
+    if (cilindro) cilindro->cambiarnormales();
+    if (esfera) esfera->cambiarnormales();
+    if (disco) disco->cambiarnormales();
     if (pantalla) pantalla->cambiarnormales();
 }
 
