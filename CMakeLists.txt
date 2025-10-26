@@ -15,24 +15,24 @@ add_executable(${PROJECT_NAME}
         igvCamara.h
         igvPunto3D.cpp
         igvPunto3D.h
-        igvMallaTriangulos.cpp
-        igvMallaTriangulos.h
-        igvCilindro.cpp
-        igvCilindro.h
-        igvCubo.cpp
-        igvCubo.h
-        igvDisco.cpp
-        igvDisco.h
-        igvOctaedro.cpp
-        igvOctaedro.h
-        igvTetraedro.cpp
-        igvTetraedro.h
-        igvEsfera.cpp
-        igvEsfera.h
-        igvModeloArticulado.h
-        igvModeloArticulado.cpp
-        igvCono.cpp
-        igvCono.h
+        Mallas/igvMallaTriangulos.cpp
+        Mallas/igvMallaTriangulos.h
+        Mallas/igvCilindro.cpp
+        Mallas/igvCilindro.h
+        Mallas/igvCubo.cpp
+        Mallas/igvCubo.h
+        Mallas/igvDisco.cpp
+        Mallas/igvDisco.h
+        Mallas/igvOctaedro.cpp
+        Mallas/igvOctaedro.h
+        Mallas/igvTetraedro.cpp
+        Mallas/igvTetraedro.h
+        Mallas/igvEsfera.cpp
+        Mallas/igvEsfera.h
+        Mallas/igvModeloArticulado.h
+        Mallas/igvModeloArticulado.cpp
+        Mallas/igvCono.cpp
+        Mallas/igvCono.h
 )
 
 if (LINUX)

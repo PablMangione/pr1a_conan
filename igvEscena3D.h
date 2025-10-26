@@ -9,7 +9,7 @@
 #include <GL/glut.h>
 #endif
 
-#include "igvModeloArticulado.h"
+#include "Mallas/igvModeloArticulado.h"
 
 class igvEscena3D {
 public:

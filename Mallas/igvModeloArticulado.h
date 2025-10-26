@@ -14,11 +14,10 @@
 
 class igvModeloArticulado {
 private:
-    // Primitivas reutilizables
-    igvMallaTriangulos* cilindro;      // Se reutiliza para base y brazos
-    igvMallaTriangulos* esfera;        // Se reutiliza para articulaciones
-    igvMallaTriangulos* disco;         // Se reutiliza para tapas de la base
-    igvMallaTriangulos* pantalla;      // Cono para la pantalla
+    igvMallaTriangulos* cilindro;
+    igvMallaTriangulos* esfera;
+    igvMallaTriangulos* disco;
+    igvMallaTriangulos* pantalla;
 
     float anguloBase;
     float anguloBrazo1;
