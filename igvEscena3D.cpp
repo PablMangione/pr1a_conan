@@ -4,11 +4,9 @@
 
 igvEscena3D::igvEscena3D() {
     ejes = false;
-    // El modelo se inicializa automáticamente con su constructor
 }
 
 igvEscena3D::~igvEscena3D() {
-    // El modelo se destruye automáticamente
 }
 
 void igvEscena3D::pintar_ejes() {
@@ -42,7 +40,6 @@ void igvEscena3D::visualizar() {
         pintar_ejes();
     }
 
-    // Delegar la visualización al modelo
     modelo.visualizar();
 
     glPopMatrix();
@@ -62,4 +59,24 @@ void igvEscena3D::cambiarModoSombreado() {
 
 void igvEscena3D::cambiarUsoNormales() {
     modelo.cambiarUsoNormales();
+}
+
+void igvEscena3D::rotarBaseLampara(float incremento) {
+    modelo.rotarBase(incremento);
+}
+
+void igvEscena3D::rotarBrazo1Lampara(float incremento) {
+    modelo.rotarBrazo1(incremento);
+}
+
+void igvEscena3D::rotarBrazo2Lampara(float incremento) {
+    modelo.rotarBrazo2(incremento);
+}
+
+void igvEscena3D::rotarPantallaLampara(float incremento) {
+    modelo.rotarPantalla(incremento);
+}
+
+void igvEscena3D::resetearPoseLampara() {
+    modelo.resetearPose();
 }

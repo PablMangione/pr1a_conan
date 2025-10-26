@@ -50,7 +50,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
         case 'E':
             _instancia->escena.set_ejes(!_instancia->escena.get_ejes());
             break;
-
         case 'c':
         case 'C':
             _instancia->camara.activarMovimiento();
@@ -84,6 +83,40 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
         case 'G':
             _instancia->escena.cambiarModoSombreado();
             _instancia->escena.cambiarUsoNormales();
+            break;
+        case 'r':
+        case 'R':
+            _instancia->escena.resetearPoseLampara();
+            break;
+        case '1':
+            _instancia->escena.rotarBaseLampara(-5.0f);
+            break;
+        case '2':
+            _instancia->escena.rotarBaseLampara(5.0f);
+            break;
+        case 'q':
+        case 'Q':
+            _instancia->escena.rotarBrazo1Lampara(5.0f);
+            break;
+        case 'a':
+        case 'A':
+            _instancia->escena.rotarBrazo1Lampara(-5.0f);
+            break;
+        case 'w':
+        case 'W':
+            _instancia->escena.rotarBrazo2Lampara(5.0f);
+            break;
+        case 's':
+        case 'S':
+            _instancia->escena.rotarBrazo2Lampara(-5.0f);
+            break;
+        case 'z':
+        case 'Z':
+            _instancia->escena.rotarPantallaLampara(5.0f);
+            break;
+        case 'x':
+        case 'X':
+            _instancia->escena.rotarPantallaLampara(-5.0f);
             break;
         case 27:
             exit(1);
