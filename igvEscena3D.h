@@ -29,6 +29,12 @@ public:
     void rotarPantallaLampara(float incremento);
     void resetearPoseLampara();
 
+    void visualizarParaSeleccion();
+    ParteSeleccionable seleccionarPorColor(unsigned char r, unsigned char g, unsigned char b);
+    void setParteSeleccionada(ParteSeleccionable parte);
+    ParteSeleccionable getParteSeleccionada() const;
+    void rotarParteSeleccionada(float incremento);
+
 private:
     bool ejes = true;
     igvModeloArticulado modelo;

@@ -12,6 +12,14 @@
 #include <vector>
 #include "igvMallaTriangulos.h"
 
+enum ParteSeleccionable {
+    PARTE_NULL = 0,
+    PARTE_BASE = 1,
+    PARTE_BRAZO1 = 2,
+    PARTE_BRAZO2 = 3,
+    PARTE_PANTALLA = 4
+};
+
 class igvModeloArticulado {
 private:
     igvMallaTriangulos* cilindro;
@@ -23,6 +31,8 @@ private:
     float anguloBrazo1;
     float anguloBrazo2;
     float anguloPantalla;
+
+    ParteSeleccionable parteSeleccionada;
 
     struct Dimensiones {
         float radioBase;
@@ -44,6 +54,11 @@ private:
     void dibujarPantalla();
 
     void crearPrimitivas();
+
+    void dibujarBaseSeleccion();
+    void dibujarBrazo1Seleccion();
+    void dibujarBrazo2Seleccion();
+    void dibujarPantallaSeleccion();
 
 public:
     igvModeloArticulado();
@@ -69,6 +84,11 @@ public:
     void setAnguloPantalla(float angulo) { anguloPantalla = angulo; }
 
     void resetearPose();
+
+    void visualizarParaSeleccion();
+    void setParteSeleccionada(ParteSeleccionable parte);
+    ParteSeleccionable getParteSeleccionada() const;
+    void rotarParteSeleccionada(float incremento);
 };
 
 #endif // __IGV_MODELO_ARTICULADO

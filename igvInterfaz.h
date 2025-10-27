@@ -27,6 +27,8 @@ public:
 
     static void reshapeFunc(int w, int h);
 
+    static void mouseFunc(int button, int state, int x, int y);
+
     static void displayFunc();
 
     void configura_entorno(int argc, char **argv
@@ -53,13 +55,20 @@ public:
 
     void cambiaModoMultiViewPort() { modoMultiViewport = !modoMultiViewport; }
 
+    bool getModoRaton() const { return modoRaton; }
+
+    void cambiarModoRaton() { modoRaton = !modoRaton; }
+
 private:
     int ancho_ventana = 0;
     int alto_ventana = 0;
     igvCamara camara;
     bool modoMultiViewport = false;
+    bool modoRaton = false;
     igvEscena3D escena;
     static igvInterfaz *_instancia;
+
+    void seleccionarParte(int x, int y);
 
     igvInterfaz();
 };

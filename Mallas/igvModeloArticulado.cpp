@@ -21,6 +21,8 @@ igvModeloArticulado::igvModeloArticulado() {
     dim.radioPantalla = 0.6f;
     dim.alturaPantalla = 0.8f;
 
+    parteSeleccionada = PARTE_NULL;
+
     crearPrimitivas();
 }
 
