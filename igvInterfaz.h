@@ -27,6 +27,8 @@ public:
 
     static void reshapeFunc(int w, int h);
 
+    static void timerFunc(int value);
+
     static void displayFunc();
 
     static void mouseFunc(int button, int state, int x, int y);
@@ -59,12 +61,15 @@ public:
 
     bool getModoSeleccion() const { return modoSeleccion; }
 
+
 private:
     int ancho_ventana = 0;
     int alto_ventana = 0;
     igvCamara camara;
     bool modoMultiViewport = false;
-    bool modoSeleccion = false; // false: teclado normal, true: selección + ratón
+    bool animacionActiva = false;
+    int timerAnimacion = 16;
+    bool modoSeleccion = false;
     igvEscena3D escena;
     static igvInterfaz *_instancia;
 

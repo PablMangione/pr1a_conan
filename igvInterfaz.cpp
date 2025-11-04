@@ -102,23 +102,28 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'm':
         case 'M':
-            // Cambiar entre modo teclado y modo selección+ratón
             _instancia->cambiarModoInteraccion();
             break;
+        case 't':
+        case 'T':
+            _instancia->animacionActiva = !_instancia->animacionActiva;
+            if (_instancia->animacionActiva) {
+                printf("Animacion automática ACTIVADA\n");
+                glutTimerFunc(_instancia->timerAnimacion, timerFunc, 0);
+            } else {
+                printf("Animacion automática DESACTIVADA\n");
+            }
+            break;
         case '1':
-            // Rotar base hacia la izquierda
             if (_instancia->modoSeleccion) {
-                // Solo rotar si la base está seleccionada (parte 0)
                 if (_instancia->escena.getParteSeleccionada() == 0) {
                     _instancia->escena.rotarBaseLampara(-5.0f);
                 }
             } else {
-                // Modo normal: rotar siempre
                 _instancia->escena.rotarBaseLampara(-5.0f);
             }
             break;
         case '2':
-            // Rotar base hacia la derecha
             if (_instancia->modoSeleccion) {
                 if (_instancia->escena.getParteSeleccionada() == 0) {
                     _instancia->escena.rotarBaseLampara(5.0f);
@@ -129,9 +134,7 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'q':
         case 'Q':
-            // Rotar brazo1 hacia arriba
             if (_instancia->modoSeleccion) {
-                // Solo rotar si el brazo1 está seleccionado (parte 1)
                 if (_instancia->escena.getParteSeleccionada() == 1) {
                     _instancia->escena.rotarBrazo1Lampara(5.0f);
                 }
@@ -141,7 +144,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'a':
         case 'A':
-            // Rotar brazo1 hacia abajo
             if (_instancia->modoSeleccion) {
                 if (_instancia->escena.getParteSeleccionada() == 1) {
                     _instancia->escena.rotarBrazo1Lampara(-5.0f);
@@ -152,9 +154,7 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'w':
         case 'W':
-            // Rotar brazo2 hacia arriba
             if (_instancia->modoSeleccion) {
-                // Solo rotar si el brazo2 está seleccionado (parte 2)
                 if (_instancia->escena.getParteSeleccionada() == 2) {
                     _instancia->escena.rotarBrazo2Lampara(5.0f);
                 }
@@ -164,7 +164,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 's':
         case 'S':
-            // Rotar brazo2 hacia abajo
             if (_instancia->modoSeleccion) {
                 if (_instancia->escena.getParteSeleccionada() == 2) {
                     _instancia->escena.rotarBrazo2Lampara(-5.0f);
@@ -175,9 +174,7 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'z':
         case 'Z':
-            // Rotar pantalla hacia arriba
             if (_instancia->modoSeleccion) {
-                // Solo rotar si la pantalla está seleccionada (parte 3)
                 if (_instancia->escena.getParteSeleccionada() == 3) {
                     _instancia->escena.rotarPantallaLampara(5.0f);
                 }
@@ -187,7 +184,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
         case 'x':
         case 'X':
-            // Rotar pantalla hacia abajo
             if (_instancia->modoSeleccion) {
                 if (_instancia->escena.getParteSeleccionada() == 3) {
                     _instancia->escena.rotarPantallaLampara(-5.0f);
@@ -229,14 +225,9 @@ void igvInterfaz::reshapeFunc(int w, int h) {
 }
 
 void igvInterfaz::mouseFunc(int button, int state, int x, int y) {
-    // Solo realizar selección si estamos en modo selección
     if (_instancia->modoSeleccion && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        // Realizar selección
         _instancia->escena.seleccionarParte(x, y, _instancia->alto_ventana);
-
         int parte = _instancia->escena.getParteSeleccionada();
-
-        // Mostrar mensaje de retroalimentación
         switch(parte) {
             case 0:
                 printf("Base seleccionada - Usa teclas 1/2 para rotar\n");
@@ -251,7 +242,7 @@ void igvInterfaz::mouseFunc(int button, int state, int x, int y) {
                 printf("Pantalla seleccionada - Usa teclas Z/X para rotar\n");
                 break;
             default:
-                printf("No se seleccionó ninguna parte - Haz clic en la lámpara\n");
+                printf("No se selecciono ninguna parte - Haz clic en la lámpara\n");
                 break;
         }
 
@@ -279,12 +270,24 @@ void igvInterfaz::displayFunc() {
     glutSwapBuffers();
 }
 
+void igvInterfaz::timerFunc(int value) {
+    if (_instancia->animacionActiva) {
+        _instancia->escena.rotarBaseLampara(1.0f);
+
+        _instancia->camara.orbita(0.5);
+
+        glutPostRedisplay();
+        glutTimerFunc(_instancia->timerAnimacion, timerFunc, 0);
+    }
+}
+
 void igvInterfaz::inicializa_callbacks() {
     glutKeyboardFunc(keyboardFunc);
     glutSpecialFunc(specialFunc);
     glutReshapeFunc(reshapeFunc);
     glutDisplayFunc(displayFunc);
     glutMouseFunc(mouseFunc);
+    glutTimerFunc(16, timerFunc, 0);
 }
 
 int igvInterfaz::get_ancho_ventana() {
