@@ -55,11 +55,16 @@ public:
 
     void cambiaModoMultiViewPort() { modoMultiViewport = !modoMultiViewport; }
 
+    void cambiarModoInteraccion();
+
+    bool getModoSeleccion() const { return modoSeleccion; }
+
 private:
     int ancho_ventana = 0;
     int alto_ventana = 0;
     igvCamara camara;
     bool modoMultiViewport = false;
+    bool modoSeleccion = false; // false: teclado normal, true: selección + ratón
     igvEscena3D escena;
     static igvInterfaz *_instancia;
 
