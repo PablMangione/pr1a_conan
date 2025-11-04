@@ -69,6 +69,8 @@ public:
     void setAnguloPantalla(float angulo) { anguloPantalla = angulo; }
 
     void resetearPose();
+
+    void visualizarConColoresSeleccion();
 };
 
 #endif // __IGV_MODELO_ARTICULADO

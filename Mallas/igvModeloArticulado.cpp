@@ -191,3 +191,84 @@ void igvModeloArticulado::resetearPose() {
     anguloBrazo2 = -60.0f;
     anguloPantalla = -30.0f;
 }
+
+void igvModeloArticulado::visualizarConColoresSeleccion() {
+    glPushMatrix();
+        glRotatef(anguloBase, 0.0f, 1.0f, 0.0f);
+
+        // Base - Color ROJO (255, 0, 0)
+        glColor3ub(255, 0, 0);
+        glPushMatrix();
+            glPushMatrix();
+                glScalef(dim.radioBase, dim.alturaBase, dim.radioBase);
+                cilindro->visualizar();
+            glPopMatrix();
+            glPushMatrix();
+                glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+                glScalef(dim.radioBase, 1.0f, dim.radioBase);
+                disco->visualizar();
+            glPopMatrix();
+            glPushMatrix();
+                glTranslatef(0.0f, dim.alturaBase, 0.0f);
+                glScalef(dim.radioBase, 1.0f, dim.radioBase);
+                disco->visualizar();
+            glPopMatrix();
+        glPopMatrix();
+
+        // Brazo1 - Color VERDE (0, 255, 0)
+        glColor3ub(0, 255, 0);
+        glPushMatrix();
+            glTranslatef(0.0f, dim.alturaBase, 0.0f);
+            glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
+            glScalef(dim.radioBrazo1, dim.longitudBrazo1, dim.radioBrazo1);
+            cilindro->visualizar();
+        glPopMatrix();
+
+        // Articulación 1 - mismo color que Brazo1
+        glPushMatrix();
+            glTranslatef(0.0f, dim.alturaBase, 0.0f);
+            glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
+            glScalef(dim.radioArticulacion, dim.radioArticulacion, dim.radioArticulacion);
+            esfera->visualizar();
+        glPopMatrix();
+
+        // Brazo2 - Color AZUL (0, 0, 255)
+        glColor3ub(0, 0, 255);
+        glPushMatrix();
+            glTranslatef(0.0f, dim.alturaBase, 0.0f);
+            glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
+            glRotatef(anguloBrazo2, 0.0f, 0.0f, 1.0f);
+            glScalef(dim.radioBrazo2, dim.longitudBrazo2, dim.radioBrazo2);
+            cilindro->visualizar();
+        glPopMatrix();
+
+        // Articulación 2 - mismo color que Brazo2
+        glPushMatrix();
+            glTranslatef(0.0f, dim.alturaBase, 0.0f);
+            glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
+            glRotatef(anguloBrazo2, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, dim.longitudBrazo2, 0.0f);
+            float radio2 = dim.radioArticulacion * 0.8f;
+            glScalef(radio2, radio2, radio2);
+            esfera->visualizar();
+        glPopMatrix();
+
+        // Pantalla - Color AMARILLO (255, 255, 0)
+        glColor3ub(255, 255, 0);
+        glPushMatrix();
+            glTranslatef(0.0f, dim.alturaBase, 0.0f);
+            glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
+            glRotatef(anguloBrazo2, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, dim.longitudBrazo2, 0.0f);
+            glRotatef(anguloPantalla, 0.0f, 0.0f, 1.0f);
+            glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+            glTranslatef(0.0f, -dim.alturaPantalla, 0.0f);
+            pantalla->visualizar();
+        glPopMatrix();
+
+    glPopMatrix();
+}

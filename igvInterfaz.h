@@ -29,6 +29,8 @@ public:
 
     static void displayFunc();
 
+    static void mouseFunc(int button, int state, int x, int y);
+
     void configura_entorno(int argc, char **argv
                            , int _ancho_ventana, int _alto_ventana
                            , int _pos_X, int _pos_Y

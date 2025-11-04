@@ -150,6 +150,20 @@ void igvInterfaz::reshapeFunc(int w, int h) {
     _instancia->camara.aplicar();
 }
 
+void igvInterfaz::mouseFunc(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        // Realizar selección
+        _instancia->escena.seleccionarParte(x, y, _instancia->alto_ventana);
+
+        int parte = _instancia->escena.getParteSeleccionada();
+        if (parte >= 0) {
+            printf("Parte seleccionada: %d\n", parte);
+        }
+
+        glutPostRedisplay();
+    }
+}
+
 void igvInterfaz::displayFunc() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -175,6 +189,7 @@ void igvInterfaz::inicializa_callbacks() {
     glutSpecialFunc(specialFunc);
     glutReshapeFunc(reshapeFunc);
     glutDisplayFunc(displayFunc);
+    glutMouseFunc(mouseFunc);
 }
 
 int igvInterfaz::get_ancho_ventana() {
