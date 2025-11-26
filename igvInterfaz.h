@@ -65,15 +65,12 @@ private:
     igvCamara camara;
     bool modoMultiViewport = false;
 
-    // Animación automática del modelo (tecla a/A)
     bool animacionModelo = false;
 
-    // Movimiento automático de cámara (tecla g/G)
     bool animacionCamara = false;
 
     int timerAnimacion = 16;
 
-    // Variables para arrastre del ratón
     bool arrastrando = false;
     int mouseX_anterior = 0;
     int mouseY_anterior = 0;

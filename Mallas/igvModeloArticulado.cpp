@@ -20,7 +20,7 @@ igvModeloArticulado::igvModeloArticulado() {
     dim.radioBrazo2 = 0.08f;
     dim.radioPantalla = 0.6f;
     dim.alturaPantalla = 0.8f;
-
+    //MARQUEZ-ALBA repo=new IgvRepo();
     crearPrimitivas();
 }
 
@@ -81,6 +81,7 @@ void igvModeloArticulado::dibujarArticulacion1() {
         glRotatef(anguloBrazo1, 0.0f, 0.0f, 1.0f);
         glTranslatef(0.0f, dim.longitudBrazo1, 0.0f);
         glScalef(dim.radioArticulacion, dim.radioArticulacion, dim.radioArticulacion);
+        //MARQUEZ-ALBA repo.IgvEsfera();
         esfera->visualizar();
     glPopMatrix();
 }

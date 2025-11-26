@@ -46,7 +46,7 @@ public:
 private:
     bool ejes = true;
     igvModeloArticulado modelo;
-    int parteSeleccionada = -1; // -1: ninguna, 0: base, 1: brazo1, 2: brazo2, 3: pantalla
+    int parteSeleccionada = -1;
 
     void visualizarModoSeleccion();
 

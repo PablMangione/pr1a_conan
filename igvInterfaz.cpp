@@ -88,7 +88,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             _instancia->cambiaModoMultiViewPort();
             break;
 
-        // Tecla 's/S' - Cambiar modo de sombreado (Gouraud/Flat)
         case 's':
         case 'S':
             _instancia->escena.cambiarModoSombreado();
@@ -96,14 +95,12 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             printf("Modo de sombreado cambiado\n");
             break;
 
-        // Tecla 'r/R' - Resetear pose de la lámpara
         case 'r':
         case 'R':
             _instancia->escena.resetearPoseLampara();
             printf("Pose reseteada\n");
             break;
 
-        // Tecla 'a/A' - Animación automática del MODELO (según enunciado)
         case 'a':
         case 'A':
             _instancia->animacionModelo = !_instancia->animacionModelo;
@@ -117,7 +114,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             }
             break;
 
-        // Tecla 'g/G' - Movimiento automático de CÁMARA (según enunciado)
         case 'g':
         case 'G':
             _instancia->animacionCamara = !_instancia->animacionCamara;
@@ -131,7 +127,6 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             }
             break;
 
-        // Teclas 1, 2, 3, 4 - Seleccionar parte de la lámpara
         case '1':
             _instancia->escena.setParteSeleccionada(0);
             printf("Parte seleccionada: BASE - Usa cursores para rotar\n");
@@ -157,7 +152,7 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             printf("Ninguna parte seleccionada\n");
             break;
 
-        case 27: // ESC
+        case 27:
             exit(1);
     }
     glutPostRedisplay();
@@ -166,12 +161,10 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
 void igvInterfaz::specialFunc(int key, int x, int y) {
     int parteSeleccionada = _instancia->escena.getParteSeleccionada();
 
-    // Si hay una parte seleccionada, los cursores controlan esa parte
     if (parteSeleccionada >= 0) {
         switch (key) {
             case GLUT_KEY_LEFT:
             case GLUT_KEY_DOWN:
-                // Rotar en sentido negativo
                 switch (parteSeleccionada) {
                     case 0: _instancia->escena.rotarBaseLampara(-5.0f); break;
                     case 1: _instancia->escena.rotarBrazo1Lampara(-5.0f); break;
@@ -182,7 +175,6 @@ void igvInterfaz::specialFunc(int key, int x, int y) {
 
             case GLUT_KEY_RIGHT:
             case GLUT_KEY_UP:
-                // Rotar en sentido positivo
                 switch (parteSeleccionada) {
                     case 0: _instancia->escena.rotarBaseLampara(5.0f); break;
                     case 1: _instancia->escena.rotarBrazo1Lampara(5.0f); break;
@@ -192,7 +184,6 @@ void igvInterfaz::specialFunc(int key, int x, int y) {
                 break;
         }
     } else {
-        // Si no hay parte seleccionada, los cursores controlan la cámara
         switch (key) {
             case GLUT_KEY_LEFT:
                 _instancia->camara.orbita(-5.0);
@@ -222,16 +213,12 @@ void igvInterfaz::reshapeFunc(int w, int h) {
 void igvInterfaz::mouseFunc(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON) {
         if (state == GLUT_DOWN) {
-            // Intentar seleccionar una parte con clic
             _instancia->escena.seleccionarParte(x, y, _instancia->alto_ventana);
-
             int parte = _instancia->escena.getParteSeleccionada();
             if (parte >= 0) {
-                // Parte seleccionada, iniciar arrastre
                 _instancia->arrastrando = true;
                 _instancia->mouseX_anterior = x;
                 _instancia->mouseY_anterior = y;
-
                 switch(parte) {
                     case 0:
                         printf("Base seleccionada - Arrastra o usa cursores para rotar\n");
@@ -250,11 +237,9 @@ void igvInterfaz::mouseFunc(int button, int state, int x, int y) {
                 printf("No se selecciono ninguna parte - Haz clic en la lampara o usa teclas 1-4\n");
             }
         } else if (state == GLUT_UP) {
-            // Terminar arrastre
             _instancia->arrastrando = false;
         }
     }
-
     glutPostRedisplay();
 }
 
@@ -263,33 +248,29 @@ void igvInterfaz::motionFunc(int x, int y) {
         int parteSeleccionada = _instancia->escena.getParteSeleccionada();
 
         if (parteSeleccionada >= 0) {
-            // Calcular desplazamiento del ratón
             int dx = x - _instancia->mouseX_anterior;
             int dy = y - _instancia->mouseY_anterior;
 
-            // Sensibilidad del movimiento
             float sensibilidad = 0.5f;
 
-            // Aplicar transformación según la parte seleccionada
             switch (parteSeleccionada) {
-                case 0: // Base - rotar con movimiento horizontal
+                case 0:
                     _instancia->escena.rotarBaseLampara(dx * sensibilidad);
                     break;
 
-                case 1: // Brazo 1 - rotar con movimiento vertical
+                case 1:
                     _instancia->escena.rotarBrazo1Lampara(-dy * sensibilidad);
                     break;
 
-                case 2: // Brazo 2 - rotar con movimiento vertical
+                case 2:
                     _instancia->escena.rotarBrazo2Lampara(-dy * sensibilidad);
                     break;
 
-                case 3: // Pantalla - rotar con movimiento vertical
+                case 3:
                     _instancia->escena.rotarPantallaLampara(-dy * sensibilidad);
                     break;
             }
 
-            // Actualizar posición anterior
             _instancia->mouseX_anterior = x;
             _instancia->mouseY_anterior = y;
 
@@ -321,13 +302,11 @@ void igvInterfaz::displayFunc() {
 void igvInterfaz::timerFunc(int value) {
     bool hayAnimacion = false;
 
-    // Animación automática del modelo
     if (_instancia->animacionModelo) {
         _instancia->escena.rotarBaseLampara(1.0f);
         hayAnimacion = true;
     }
 
-    // Movimiento automático de la cámara
     if (_instancia->animacionCamara) {
         _instancia->camara.orbita(0.5);
         hayAnimacion = true;
@@ -345,7 +324,7 @@ void igvInterfaz::inicializa_callbacks() {
     glutReshapeFunc(reshapeFunc);
     glutDisplayFunc(displayFunc);
     glutMouseFunc(mouseFunc);
-    glutMotionFunc(motionFunc);  // Callback para arrastre del ratón
+    glutMotionFunc(motionFunc);
 }
 
 int igvInterfaz::get_ancho_ventana() {
