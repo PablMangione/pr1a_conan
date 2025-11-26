@@ -98,20 +98,46 @@ unsigned char* igvEscena3D::capturarBufferSeleccion(int x, int y) {
 }
 
 int igvEscena3D::identificarPartePorColor(unsigned char r, unsigned char g, unsigned char b) {
-    if (r == 255 && g == 0 && b == 0) return 0; // Base
-    if (r == 0 && g == 255 && b == 0) return 1; // Brazo1
-    if (r == 0 && g == 0 && b == 255) return 2; // Brazo2
-    if (r == 255 && g == 255 && b == 0) return 3; // Pantalla
-    return -1;
+    // Tolerancia para comparación de colores (por posibles variaciones de renderizado)
+    const int tolerancia = 50;
+
+    // Base - ROJO (255, 0, 0)
+    if (r > 255 - tolerancia && g < tolerancia && b < tolerancia) return 0;
+
+    // Brazo1 - VERDE (0, 255, 0)
+    if (r < tolerancia && g > 255 - tolerancia && b < tolerancia) return 1;
+
+    // Brazo2 - AZUL (0, 0, 255)
+    if (r < tolerancia && g < tolerancia && b > 255 - tolerancia) return 2;
+
+    // Pantalla - AMARILLO (255, 255, 0)
+    if (r > 255 - tolerancia && g > 255 - tolerancia && b < tolerancia) return 3;
+
+    return -1; // Ninguna parte
 }
 
 void igvEscena3D::seleccionarParte(int x, int y, int alto_ventana) {
+    // Guardar color de fondo actual
+    GLfloat colorFondoAnterior[4];
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, colorFondoAnterior);
+
+    // Limpiar con color negro para selección
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Renderizar en modo selección
     visualizarModoSeleccion();
+
     glFlush();
     glFinish();
+
+    // Leer el pixel bajo el cursor (y invertida en OpenGL)
     unsigned char* pixel = capturarBufferSeleccion(x, alto_ventana - y);
+
+    // Identificar la parte por color
     parteSeleccionada = identificarPartePorColor(pixel[0], pixel[1], pixel[2]);
-    glClearColor(1.0, 1.0, 1.0, 0.0);
+
+    // Restaurar color de fondo
+    glClearColor(colorFondoAnterior[0], colorFondoAnterior[1],
+                 colorFondoAnterior[2], colorFondoAnterior[3]);
 }

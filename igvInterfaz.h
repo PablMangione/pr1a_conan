@@ -33,6 +33,8 @@ public:
 
     static void mouseFunc(int button, int state, int x, int y);
 
+    static void motionFunc(int x, int y);
+
     void configura_entorno(int argc, char **argv
                            , int _ancho_ventana, int _alto_ventana
                            , int _pos_X, int _pos_Y
@@ -57,19 +59,25 @@ public:
 
     void cambiaModoMultiViewPort() { modoMultiViewport = !modoMultiViewport; }
 
-    void cambiarModoInteraccion();
-
-    bool getModoSeleccion() const { return modoSeleccion; }
-
-
 private:
     int ancho_ventana = 0;
     int alto_ventana = 0;
     igvCamara camara;
     bool modoMultiViewport = false;
-    bool animacionActiva = false;
+
+    // Animación automática del modelo (tecla a/A)
+    bool animacionModelo = false;
+
+    // Movimiento automático de cámara (tecla g/G)
+    bool animacionCamara = false;
+
     int timerAnimacion = 16;
-    bool modoSeleccion = false;
+
+    // Variables para arrastre del ratón
+    bool arrastrando = false;
+    int mouseX_anterior = 0;
+    int mouseY_anterior = 0;
+
     igvEscena3D escena;
     static igvInterfaz *_instancia;
 
