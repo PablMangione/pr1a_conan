@@ -33,6 +33,12 @@ add_executable(${PROJECT_NAME}
         Mallas/igvModeloArticulado.cpp
         Mallas/igvCono.cpp
         Mallas/igvCono.h
+        igvFuenteLuz.cpp
+        igvFuenteLuz.h
+        lodepng.cpp
+        lodepng.h
+        igvColor.cpp
+        igvColor.h
 )
 
 if (LINUX)
