@@ -46,6 +46,10 @@ public:
     bool operator!=(const igvPunto3D &p);
 
     void set(const double &x, const double &y, const double &z);
+
+    float *cloneToFloatArray() const; // Devuelve el punto en un array de float
+
+
 };
 
 inline double &igvPunto3D::operator[](const unsigned char idx) {
