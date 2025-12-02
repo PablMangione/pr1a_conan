@@ -39,6 +39,10 @@ add_executable(${PROJECT_NAME}
         lodepng.h
         igvColor.cpp
         igvColor.h
+        igvMaterial.cpp
+        igvMaterial.h
+        igvTextura.cpp
+        igvTextura.h
 )
 
 if (LINUX)
