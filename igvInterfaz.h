@@ -15,6 +15,73 @@
 #include "igvEscena3D.h"
 #include "igvCamara.h"
 
+// ============================================
+// CONSTANTES DE MENÚ
+// ============================================
+
+// Menú principal
+enum MenuPrincipal {
+    IGV_MENU_SALIR = 0
+};
+
+// Submenú de materiales del suelo
+enum MenuMateriales {
+    IGV_MENU_MATERIAL_1 = 10,
+    IGV_MENU_MATERIAL_2,
+    IGV_MENU_MATERIAL_3
+};
+
+// Submenú de texturas
+enum MenuTexturas {
+    IGV_MENU_TEXTURA_OFF = 20,
+    IGV_MENU_TEXTURA_1,
+    IGV_MENU_TEXTURA_2,
+    IGV_MENU_TEXTURA_AJEDREZ
+};
+
+// Submenú de filtros de textura
+enum MenuFiltros {
+    IGV_MENU_FILTRO_MAG_NEAREST = 30,
+    IGV_MENU_FILTRO_MAG_LINEAR,
+    IGV_MENU_FILTRO_MIN_NEAREST,
+    IGV_MENU_FILTRO_MIN_LINEAR
+};
+
+// Submenú de luces (activar/desactivar)
+enum MenuLuces {
+    IGV_MENU_LUZ_AMBIENTE = 40,
+    IGV_MENU_LUZ_DIRECCIONAL,
+    IGV_MENU_LUZ_PUNTUAL,
+    IGV_MENU_LUZ_CONO
+};
+
+// Submenú de movimiento de luces
+enum MenuMoverLuces {
+    IGV_MENU_MOVER_NINGUNA = 50,
+    IGV_MENU_MOVER_PUNTUAL,
+    IGV_MENU_MOVER_CONO
+};
+
+// Submenú de sombreado (existente)
+enum MenuSombreado {
+    IGV_MENU_SOMBREADO_PLANO = 60,
+    IGV_MENU_SOMBREADO_GOURAUD
+};
+
+// Submenú de animación (existente)
+enum MenuAnimacion {
+    IGV_MENU_ANIMAR_BRAZO = 70,
+    IGV_MENU_ANIMAR_CAMARA,
+    IGV_MENU_ANIMAR_TODO,
+    IGV_MENU_DETENER_TODO
+};
+
+// Submenú de control (existente)
+enum MenuControl {
+    IGV_MENU_MODO_TECLADO = 80,
+    IGV_MENU_MODO_RATON
+};
+
 class igvInterfaz {
 public:
     static igvInterfaz &getInstancia();
