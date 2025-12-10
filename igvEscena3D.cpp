@@ -4,6 +4,100 @@
 
 igvEscena3D::igvEscena3D() {
     ejes = false;
+    // ============================================
+    // INICIALIZACIÓN DE MATERIALES DEL SUELO
+    // ============================================
+
+    // Material 1: Rojo brillante
+    materialesSuelo[0].set(
+        igvColor(0.2, 0.0, 0.0),    // Ka - ambiental
+        igvColor(0.8, 0.1, 0.1),    // Kd - difuso
+        igvColor(1.0, 1.0, 1.0),    // Ks - especular
+        50.0                         // Ns - exponente Phong
+    );
+
+    // Material 2: Verde mate
+    materialesSuelo[1].set(
+        igvColor(0.0, 0.2, 0.0),    // Ka
+        igvColor(0.1, 0.6, 0.1),    // Kd
+        igvColor(0.2, 0.2, 0.2),    // Ks
+        10.0                         // Ns
+    );
+
+    // Material 3: Azul metálico
+    materialesSuelo[2].set(
+        igvColor(0.0, 0.0, 0.2),    // Ka
+        igvColor(0.1, 0.1, 0.8),    // Kd
+        igvColor(1.0, 1.0, 1.0),    // Ks
+        100.0                        // Ns
+    );
+
+    // ============================================
+    // INICIALIZACIÓN DE TEXTURAS
+    // ============================================
+
+    // Textura 1: Desde archivo
+    texturas[0] = new igvTextura("mapa.png");
+
+    // Textura 2: Otra imagen (crear o usar existente)
+    texturas[1] = new igvTextura("textura2.png");
+
+    // Textura 3: Tablero de ajedrez (procedural)
+    texturas[2] = igvTextura::crearTableroAjedrez(256, 8);
+
+    // ============================================
+    // INICIALIZACIÓN DE LUCES
+    // ============================================
+
+    // Luz ambiental global (usando GL_LIGHT0)
+    // Nota: Para luz ambiental global usar glLightModelfv
+    luzAmbiente = igvFuenteLuz(
+        GL_LIGHT0,
+        igvPunto3D(0, 0, 0),           // Posición (no relevante para ambiental)
+        igvColor(0.3, 0.3, 0.3),       // Ambiental
+        igvColor(0.0, 0.0, 0.0),       // Difuso (0 para luz ambiental pura)
+        igvColor(0.0, 0.0, 0.0),       // Especular
+        1.0, 0.0, 0.0                  // Atenuación
+    );
+
+    // Luz direccional (GL_LIGHT1) - posición con w=0
+    luzDireccional = igvFuenteLuz(
+        GL_LIGHT1,
+        igvPunto3D(-1, -1, -1),        // Dirección (w=0 para direccional)
+        igvColor(0.1, 0.1, 0.1),       // Ambiental
+        igvColor(0.7, 0.7, 0.7),       // Difuso
+        igvColor(0.5, 0.5, 0.5),       // Especular
+        1.0, 0.0, 0.0                  // Atenuación
+    );
+
+    // Luz puntual (GL_LIGHT2)
+    luzPuntual = igvFuenteLuz(
+        GL_LIGHT2,
+        igvPunto3D(5, 5, 5),           // Posición
+        igvColor(0.1, 0.1, 0.1),       // Ambiental
+        igvColor(0.8, 0.8, 0.6),       // Difuso (amarillento)
+        igvColor(1.0, 1.0, 1.0),       // Especular
+        1.0, 0.01, 0.001               // Atenuación
+    );
+
+    // Cono de luz / Spotlight (GL_LIGHT3)
+    luzCono = igvFuenteLuz(
+        GL_LIGHT3,
+        igvPunto3D(0, 8, 0),           // Posición
+        igvColor(0.0, 0.0, 0.0),       // Ambiental
+        igvColor(1.0, 1.0, 1.0),       // Difuso
+        igvColor(1.0, 1.0, 1.0),       // Especular
+        1.0, 0.0, 0.0,                 // Atenuación
+        igvPunto3D(0, -1, 0),          // Dirección del foco (hacia abajo)
+        30.0,                          // Ángulo de apertura (grados)
+        15.0                           // Exponente del foco
+    );
+
+    // Encender las luces por defecto
+    luzAmbiente.encender();
+    luzDireccional.encender();
+    luzPuntual.encender();
+    luzCono.encender();
 }
 
 igvEscena3D::~igvEscena3D() {
