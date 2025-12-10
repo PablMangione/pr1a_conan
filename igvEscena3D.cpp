@@ -270,6 +270,7 @@ void igvEscena3D::dibujarSuelo() {
 
     // Aplicar textura si está activa
     if (texturasActivas && texturas[texturaActual] != nullptr) {
+        glEnable(GL_TEXTURE_2D);
         texturas[texturaActual]->setFiltroMag(filtroMag);
         texturas[texturaActual]->setFiltroMin(filtroMin);
         texturas[texturaActual]->aplicar();
