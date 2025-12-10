@@ -51,6 +51,33 @@ private:
     igvModeloArticulado modelo;
     int parteSeleccionada = -1;
 
+    // SUELO
+    // ============================================
+    int materialActual = 0;          // Índice del material actual (0, 1, 2)
+    igvMaterial materialesSuelo[3];  // 3 materiales predefinidos
+
+    // ============================================
+    // TEXTURAS
+    // ============================================
+    bool texturasActivas = false;    // Si se aplican texturas o no
+    int texturaActual = 0;           // Índice de textura actual (0, 1, 2)
+    igvTextura* texturas[3];         // 3 texturas (incluyendo ajedrez)
+    GLenum filtroMag = GL_LINEAR;    // Filtro de magnificación
+    GLenum filtroMin = GL_LINEAR;    // Filtro de minificación
+
+    // ============================================
+    // LUCES
+    // ============================================
+    igvFuenteLuz luzAmbiente;        // Luz ambiental global
+    igvFuenteLuz luzDireccional;     // Luz direccional (tipo sol)
+    igvFuenteLuz luzPuntual;         // Luz puntual (bombilla)
+    igvFuenteLuz luzCono;            // Cono de luz (spotlight)
+
+    bool luzAmbienteActiva = true;
+    bool luzDireccionalActiva = true;
+    bool luzPuntualActiva = true;
+    bool luzConoActiva = true;
+
     void visualizarModoSeleccion();
 
     unsigned char *capturarBufferSeleccion(int x, int y);
