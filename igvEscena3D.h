@@ -123,6 +123,8 @@ private:
     int identificarPartePorColor(unsigned char r, unsigned char g, unsigned char b);
 
     void pintar_ejes();
+
+    void dibujarSuelo();
 };
 
 #endif

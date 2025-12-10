@@ -220,3 +220,42 @@ void igvEscena3D::seleccionarParte(int x, int y, int alto_ventana) {
     glClearColor(colorFondoAnterior[0], colorFondoAnterior[1],
                  colorFondoAnterior[2], colorFondoAnterior[3]);
 }
+
+void igvEscena3D::dibujarSuelo() {
+    glPushMatrix();
+
+    // Aplicar material actual
+    materialesSuelo[materialActual].aplicar();
+
+    // Aplicar textura si está activa
+    if (texturasActivas && texturas[texturaActual] != nullptr) {
+        texturas[texturaActual]->setFiltroMag(filtroMag);
+        texturas[texturaActual]->setFiltroMin(filtroMin);
+        texturas[texturaActual]->aplicar();
+    }
+
+    // Dibujar quad (suelo)
+    float tamano = 10.0f;
+    glBegin(GL_QUADS);
+    glNormal3f(0.0f, 1.0f, 0.0f);  // Normal hacia arriba
+
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-tamano, 0.0f, -tamano);
+
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(tamano, 0.0f, -tamano);
+
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(tamano, 0.0f, tamano);
+
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-tamano, 0.0f, tamano);
+    glEnd();
+
+    // Desactivar textura si estaba activa
+    if (texturasActivas && texturas[texturaActual] != nullptr) {
+        texturas[texturaActual]->desactivar();
+    }
+
+    glPopMatrix();
+}
