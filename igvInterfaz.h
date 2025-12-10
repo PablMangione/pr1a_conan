@@ -142,6 +142,10 @@ private:
     int mouseX_anterior = 0;
     int mouseY_anterior = 0;
 
+    // Control de qué luz se está moviendo
+    // -1 = ninguna, 0 = puntual, 1 = cono
+    int luzEnMovimiento = -1;
+
     igvEscena3D escena;
     static igvInterfaz *_instancia;
 
