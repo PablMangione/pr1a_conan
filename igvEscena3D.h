@@ -10,6 +10,9 @@
 #endif
 
 #include "Mallas/igvModeloArticulado.h"
+#include "igvMaterial.h"
+#include "igvTextura.h"
+#include "igvFuenteLuz.h"
 
 class igvEscena3D {
 public:
