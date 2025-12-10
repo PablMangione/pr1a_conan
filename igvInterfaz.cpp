@@ -461,3 +461,80 @@ void igvInterfaz::menuHandle(int opcion) {
 
     glutPostRedisplay();
 }
+
+void igvInterfaz::create_menu() {
+    // ============================================
+    // SUBMENÚ: MATERIALES DEL SUELO
+    // ============================================
+    int submenu_materiales = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("Material 1 (Rojo brillante)", IGV_MENU_MATERIAL_1);
+    glutAddMenuEntry("Material 2 (Verde mate)", IGV_MENU_MATERIAL_2);
+    glutAddMenuEntry("Material 3 (Azul metalico)", IGV_MENU_MATERIAL_3);
+
+    // ============================================
+    // SUBMENÚ: TEXTURAS
+    // ============================================
+    int submenu_texturas = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("Activar/Desactivar Texturas", IGV_MENU_TEXTURA_OFF);
+    glutAddMenuEntry("Textura 1 (Mapa)", IGV_MENU_TEXTURA_1);
+    glutAddMenuEntry("Textura 2", IGV_MENU_TEXTURA_2);
+    glutAddMenuEntry("Tablero Ajedrez", IGV_MENU_TEXTURA_AJEDREZ);
+
+    // ============================================
+    // SUBMENÚ: FILTROS DE TEXTURA
+    // ============================================
+    int submenu_filtros = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("MAG: GL_NEAREST", IGV_MENU_FILTRO_MAG_NEAREST);
+    glutAddMenuEntry("MAG: GL_LINEAR", IGV_MENU_FILTRO_MAG_LINEAR);
+    glutAddMenuEntry("MIN: GL_NEAREST", IGV_MENU_FILTRO_MIN_NEAREST);
+    glutAddMenuEntry("MIN: GL_LINEAR", IGV_MENU_FILTRO_MIN_LINEAR);
+
+    // ============================================
+    // SUBMENÚ: LUCES (ACTIVAR/DESACTIVAR)
+    // ============================================
+    int submenu_luces = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("Toggle Luz Ambiental", IGV_MENU_LUZ_AMBIENTE);
+    glutAddMenuEntry("Toggle Luz Direccional", IGV_MENU_LUZ_DIRECCIONAL);
+    glutAddMenuEntry("Toggle Luz Puntual", IGV_MENU_LUZ_PUNTUAL);
+    glutAddMenuEntry("Toggle Cono de Luz", IGV_MENU_LUZ_CONO);
+
+    // ============================================
+    // SUBMENÚ: MOVER LUCES
+    // ============================================
+    int submenu_mover = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("No mover ninguna luz", IGV_MENU_MOVER_NINGUNA);
+    glutAddMenuEntry("Mover Luz Puntual", IGV_MENU_MOVER_PUNTUAL);
+    glutAddMenuEntry("Mover Cono de Luz", IGV_MENU_MOVER_CONO);
+
+    // ============================================
+    // SUBMENÚ: SOMBREADO
+    // ============================================
+    int submenu_sombreado = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("Sombreado Plano (Flat)", IGV_MENU_SOMBREADO_PLANO);
+    glutAddMenuEntry("Sombreado Suave (Gouraud)", IGV_MENU_SOMBREADO_GOURAUD);
+
+    // ============================================
+    // SUBMENÚ: ANIMACIÓN
+    // ============================================
+    int submenu_animacion = glutCreateMenu(menuHandle);
+    glutAddMenuEntry("Animar Brazo (A)", IGV_MENU_ANIMAR_BRAZO);
+    glutAddMenuEntry("Orbitar Camara (G)", IGV_MENU_ANIMAR_CAMARA);
+    glutAddMenuEntry("Activar Todo", IGV_MENU_ANIMAR_TODO);
+    glutAddMenuEntry("Detener Todo", IGV_MENU_DETENER_TODO);
+
+    // ============================================
+    // MENÚ PRINCIPAL
+    // ============================================
+    int menu_principal = glutCreateMenu(menuHandle);
+    glutAddSubMenu("Materiales Suelo", submenu_materiales);
+    glutAddSubMenu("Texturas", submenu_texturas);
+    glutAddSubMenu("Filtros Textura", submenu_filtros);
+    glutAddSubMenu("Luces", submenu_luces);
+    glutAddSubMenu("Mover Luces", submenu_mover);
+    glutAddSubMenu("Sombreado", submenu_sombreado);
+    glutAddSubMenu("Animacion", submenu_animacion);
+    glutAddMenuEntry("Salir", IGV_MENU_SALIR);
+
+    // Asociar menú al botón derecho del ratón
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
