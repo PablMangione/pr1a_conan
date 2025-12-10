@@ -108,6 +108,8 @@ public:
                            , std::string _titulo
     );
 
+    static void menuHandle(int opcion);
+
     void create_menu();
 
     void inicializa_callbacks();

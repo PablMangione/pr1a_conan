@@ -344,3 +344,120 @@ void igvInterfaz::set_ancho_ventana(int _ancho_ventana) {
 void igvInterfaz::set_alto_ventana(int _alto_ventana) {
     alto_ventana = _alto_ventana;
 }
+
+void igvInterfaz::menuHandle(int opcion) {
+    igvInterfaz& interfaz = igvInterfaz::getInstancia();
+
+    switch (opcion) {
+        // ============================================
+        // MATERIALES DEL SUELO
+        // ============================================
+        case IGV_MENU_MATERIAL_1:
+            interfaz.escena.setMaterialSuelo(0);
+            break;
+        case IGV_MENU_MATERIAL_2:
+            interfaz.escena.setMaterialSuelo(1);
+            break;
+        case IGV_MENU_MATERIAL_3:
+            interfaz.escena.setMaterialSuelo(2);
+            break;
+
+        // ============================================
+        // TEXTURAS
+        // ============================================
+        case IGV_MENU_TEXTURA_OFF:
+            interfaz.escena.toggleTexturas();
+            break;
+        case IGV_MENU_TEXTURA_1:
+            interfaz.escena.setTexturaSuelo(0);
+            break;
+        case IGV_MENU_TEXTURA_2:
+            interfaz.escena.setTexturaSuelo(1);
+            break;
+        case IGV_MENU_TEXTURA_AJEDREZ:
+            interfaz.escena.setTexturaSuelo(2);
+            break;
+
+        // ============================================
+        // FILTROS DE TEXTURA
+        // ============================================
+        case IGV_MENU_FILTRO_MAG_NEAREST:
+            interfaz.escena.setFiltroMag(GL_NEAREST);
+            break;
+        case IGV_MENU_FILTRO_MAG_LINEAR:
+            interfaz.escena.setFiltroMag(GL_LINEAR);
+            break;
+        case IGV_MENU_FILTRO_MIN_NEAREST:
+            interfaz.escena.setFiltroMin(GL_NEAREST);
+            break;
+        case IGV_MENU_FILTRO_MIN_LINEAR:
+            interfaz.escena.setFiltroMin(GL_LINEAR);
+            break;
+
+        // ============================================
+        // LUCES (ACTIVAR/DESACTIVAR)
+        // ============================================
+        case IGV_MENU_LUZ_AMBIENTE:
+            interfaz.escena.toggleLuzAmbiente();
+            break;
+        case IGV_MENU_LUZ_DIRECCIONAL:
+            interfaz.escena.toggleLuzDireccional();
+            break;
+        case IGV_MENU_LUZ_PUNTUAL:
+            interfaz.escena.toggleLuzPuntual();
+            break;
+        case IGV_MENU_LUZ_CONO:
+            interfaz.escena.toggleLuzCono();
+            break;
+
+        // ============================================
+        // MOVIMIENTO DE LUCES
+        // ============================================
+        case IGV_MENU_MOVER_NINGUNA:
+            interfaz.luzEnMovimiento = -1;
+            break;
+        case IGV_MENU_MOVER_PUNTUAL:
+            interfaz.luzEnMovimiento = 0;
+            break;
+        case IGV_MENU_MOVER_CONO:
+            interfaz.luzEnMovimiento = 1;
+            break;
+
+        // ============================================
+        // SOMBREADO
+        // ============================================
+        case IGV_MENU_SOMBREADO_PLANO:
+            glShadeModel(GL_FLAT);
+            break;
+        case IGV_MENU_SOMBREADO_GOURAUD:
+            glShadeModel(GL_SMOOTH);
+            break;
+
+        // ============================================
+        // ANIMACIÓN
+        // ============================================
+        case IGV_MENU_ANIMAR_BRAZO:
+            interfaz.animacionModelo = !interfaz.animacionModelo;
+            break;
+        case IGV_MENU_ANIMAR_CAMARA:
+            interfaz.animacionCamara = !interfaz.animacionCamara;
+            break;
+        case IGV_MENU_ANIMAR_TODO:
+            interfaz.animacionModelo = true;
+            interfaz.animacionCamara = true;
+            break;
+        case IGV_MENU_DETENER_TODO:
+            interfaz.animacionModelo = false;
+            interfaz.animacionCamara = false;
+            break;
+
+        // ============================================
+        // SALIR
+        // ============================================
+        case IGV_MENU_SALIR:
+            exit(0);
+            break;
+    }
+
+    glutPostRedisplay();
+}
