@@ -67,3 +67,6 @@ if (WIN32)
     find_package(FreeGLUT)
     target_link_libraries(${PROJECT_NAME} FreeGLUT::freeglut_static)
 endif ()
+
+file(COPY ${CMAKE_SOURCE_DIR}/mapa.png DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/textura2.png DESTINATION ${CMAKE_BINARY_DIR})
