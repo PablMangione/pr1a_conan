@@ -297,3 +297,63 @@ void igvEscena3D::dibujarSuelo() {
 
     glPopMatrix();
 }
+
+// ============================================
+// MÉTODOS DE MATERIALES
+// ============================================
+
+void igvEscena3D::setMaterialSuelo(int indice) {
+    if (indice >= 0 && indice < 3) {
+        materialActual = indice;
+    }
+}
+
+// ============================================
+// MÉTODOS DE TEXTURAS
+// ============================================
+
+void igvEscena3D::setTexturaSuelo(int indice) {
+    if (indice >= 0 && indice < 3) {
+        texturaActual = indice;
+    }
+}
+
+void igvEscena3D::toggleTexturas() {
+    texturasActivas = !texturasActivas;
+}
+
+void igvEscena3D::setFiltroMag(GLenum filtro) {
+    filtroMag = filtro;
+}
+
+void igvEscena3D::setFiltroMin(GLenum filtro) {
+    filtroMin = filtro;
+}
+
+// ============================================
+// MÉTODOS DE LUCES
+// ============================================
+
+void igvEscena3D::toggleLuzAmbiente() {
+    luzAmbienteActiva = !luzAmbienteActiva;
+}
+
+void igvEscena3D::toggleLuzDireccional() {
+    luzDireccionalActiva = !luzDireccionalActiva;
+}
+
+void igvEscena3D::toggleLuzPuntual() {
+    luzPuntualActiva = !luzPuntualActiva;
+}
+
+void igvEscena3D::toggleLuzCono() {
+    luzConoActiva = !luzConoActiva;
+}
+
+void igvEscena3D::moverLuzPuntual(float dx, float dy, float dz) {
+    luzPuntual.mover(dx, dy, dz);
+}
+
+void igvEscena3D::moverLuzCono(float dx, float dy, float dz) {
+    luzCono.mover(dx, dy, dz);
+}
