@@ -84,6 +84,8 @@ public:
     igvFuenteLuz &getLuzPuntual() { return luzPuntual; }
     igvFuenteLuz &getLuzCono() { return luzCono; }
 
+    void inicializaLMT();
+
 private:
     bool ejes = true;
     igvModeloArticulado modelo;

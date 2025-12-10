@@ -37,6 +37,8 @@ void igvInterfaz::configura_entorno(int argc, char **argv
 
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
+
+    _instancia->escena.inicializaLMT();
 }
 
 void igvInterfaz::inicia_bucle_visualizacion() {

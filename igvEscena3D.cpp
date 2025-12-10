@@ -4,6 +4,9 @@
 
 igvEscena3D::igvEscena3D() {
     ejes = false;
+}
+
+void igvEscena3D::inicializaLMT() {
     // ============================================
     // INICIALIZACIÓN DE MATERIALES DEL SUELO
     // ============================================
