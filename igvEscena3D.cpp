@@ -124,19 +124,57 @@ void igvEscena3D::pintar_ejes() {
 }
 
 void igvEscena3D::visualizar() {
-    GLfloat light0[] = {10, 8, 9, 1};
-    glLightfv(GL_LIGHT0, GL_POSITION, light0);
-    glEnable(GL_LIGHT0);
+    // ============================================
+    // CONFIGURACIÓN DE ILUMINACIÓN
+    // ============================================
 
-    glPushMatrix();
+    // Luz ambiental global de la escena
+    GLfloat luzAmbienteGlobal[] = {0.2f, 0.2f, 0.2f, 1.0f};
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
+    // Aplicar cada luz si está activa
+    if (luzAmbienteActiva) {
+        luzAmbiente.encender();
+    } else {
+        luzAmbiente.apagar();
+    }
+    luzAmbiente.aplicar();
+
+    if (luzDireccionalActiva) {
+        luzDireccional.encender();
+    } else {
+        luzDireccional.apagar();
+    }
+    luzDireccional.aplicar();
+
+    if (luzPuntualActiva) {
+        luzPuntual.encender();
+    } else {
+        luzPuntual.apagar();
+    }
+    luzPuntual.aplicar();
+
+    if (luzConoActiva) {
+        luzCono.encender();
+    } else {
+        luzCono.apagar();
+    }
+    luzCono.aplicar();
+
+    // ============================================
+    // DIBUJAR ESCENA
+    // ============================================
+
+    // Dibujar ejes si están activos
     if (ejes) {
         pintar_ejes();
     }
 
-    modelo.visualizar();
+    // Dibujar el suelo
+    dibujarSuelo();
 
-    glPopMatrix();
+    // Dibujar el modelo articulado
+    modelo.visualizar();
 }
 
 bool igvEscena3D::get_ejes() {
