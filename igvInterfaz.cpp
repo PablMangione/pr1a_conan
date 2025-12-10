@@ -38,6 +38,8 @@ void igvInterfaz::configura_entorno(int argc, char **argv
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
 
+    create_menu();
+
     _instancia->escena.inicializaLMT();
 }
 
@@ -46,70 +48,71 @@ void igvInterfaz::inicia_bucle_visualizacion() {
 }
 
 void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
+    igvInterfaz& interfaz = igvInterfaz::getInstancia();
     switch (key) {
         case 'e':
         case 'E':
-            _instancia->escena.set_ejes(!_instancia->escena.get_ejes());
+            interfaz.escena.set_ejes(!interfaz.escena.get_ejes());
             break;
 
         case 'c':
         case 'C':
-            _instancia->camara.activarMovimiento();
+            interfaz.camara.activarMovimiento();
             break;
 
         case 'f':
         case 'F':
-            if (_instancia->camara.getMovimientoActivo())
-                _instancia->camara.desplazarAdelante(0.2);
+            if (interfaz.camara.getMovimientoActivo())
+                interfaz.camara.desplazarAdelante(0.2);
             break;
 
         case 'b':
         case 'B':
-            if (_instancia->camara.getMovimientoActivo())
+            if (interfaz.camara.getMovimientoActivo())
                 _instancia->camara.desplazarAdelante(-0.2);
             break;
 
         case '+':
-            _instancia->camara.zoom(10.0);
+            interfaz.camara.zoom(10.0);
             break;
 
         case '-':
-            _instancia->camara.zoom(-10.0);
+            interfaz.camara.zoom(-10.0);
             break;
 
         case 'p':
         case 'P':
-            if (_instancia->camara.getTipo() == IGV_PARALELA)
-                _instancia->camara.set(IGV_PERSPECTIVA);
+            if (interfaz.camara.getTipo() == IGV_PARALELA)
+                interfaz.camara.set(IGV_PERSPECTIVA);
             else
-                _instancia->camara.set(IGV_PARALELA);
+                interfaz.camara.set(IGV_PARALELA);
             break;
 
         case 'v':
         case 'V':
-            _instancia->cambiaModoMultiViewPort();
+            interfaz.cambiaModoMultiViewPort();
             break;
 
         case 's':
         case 'S':
-            _instancia->escena.cambiarModoSombreado();
-            _instancia->escena.cambiarUsoNormales();
+            interfaz.escena.cambiarModoSombreado();
+            interfaz.escena.cambiarUsoNormales();
             printf("Modo de sombreado cambiado\n");
             break;
 
         case 'r':
         case 'R':
-            _instancia->escena.resetearPoseLampara();
+            interfaz.escena.resetearPoseLampara();
             printf("Pose reseteada\n");
             break;
 
         case 'a':
         case 'A':
-            _instancia->animacionModelo = !_instancia->animacionModelo;
-            if (_instancia->animacionModelo) {
+            interfaz.animacionModelo = !interfaz.animacionModelo;
+            if (interfaz.animacionModelo) {
                 printf("Animacion automatica del MODELO activada\n");
-                if (!_instancia->animacionCamara) {
-                    glutTimerFunc(_instancia->timerAnimacion, timerFunc, 0);
+                if (!interfaz.animacionCamara) {
+                    glutTimerFunc(interfaz.timerAnimacion, timerFunc, 0);
                 }
             } else {
                 printf("Animacion automatica del MODELO desactivada\n");
@@ -118,11 +121,11 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
 
         case 'g':
         case 'G':
-            _instancia->animacionCamara = !_instancia->animacionCamara;
+            interfaz.animacionCamara = !interfaz.animacionCamara;
             if (_instancia->animacionCamara) {
                 printf("Movimiento automatico de CAMARA activado\n");
-                if (!_instancia->animacionModelo) {
-                    glutTimerFunc(_instancia->timerAnimacion, timerFunc, 0);
+                if (!interfaz.animacionModelo) {
+                    glutTimerFunc(interfaz.timerAnimacion, timerFunc, 0);
                 }
             } else {
                 printf("Movimiento automatico de CAMARA desactivado\n");
@@ -130,30 +133,75 @@ void igvInterfaz::keyboardFunc(unsigned char key, int x, int y) {
             break;
 
         case '1':
-            _instancia->escena.setParteSeleccionada(0);
+            interfaz.escena.setParteSeleccionada(0);
             printf("Parte seleccionada: BASE - Usa cursores para rotar\n");
             break;
 
         case '2':
-            _instancia->escena.setParteSeleccionada(1);
+            interfaz.escena.setParteSeleccionada(1);
             printf("Parte seleccionada: BRAZO 1 - Usa cursores para rotar\n");
             break;
 
         case '3':
-            _instancia->escena.setParteSeleccionada(2);
+            interfaz.escena.setParteSeleccionada(2);
             printf("Parte seleccionada: BRAZO 2 - Usa cursores para rotar\n");
             break;
 
         case '4':
-            _instancia->escena.setParteSeleccionada(3);
+            interfaz.escena.setParteSeleccionada(3);
             printf("Parte seleccionada: PANTALLA - Usa cursores para rotar\n");
             break;
 
         case '0':
-            _instancia->escena.setParteSeleccionada(-1);
+            interfaz.escena.setParteSeleccionada(-1);
             printf("Ninguna parte seleccionada\n");
             break;
 
+            // ============================================
+            // MOVIMIENTO DE LUCES (cuando hay una seleccionada)
+            // ============================================
+        case 'x':  // Mover en -X
+            if (interfaz.luzEnMovimiento == 0) {
+                interfaz.escena.moverLuzPuntual(-0.5f, 0, 0);
+            } else if (interfaz.luzEnMovimiento == 1) {
+                interfaz.escena.moverLuzCono(-0.5f, 0, 0);
+            }
+            break;
+        case 'X':  // Mover en +X
+            if (interfaz.luzEnMovimiento == 0) {
+                interfaz.escena.moverLuzPuntual(0.5f, 0, 0);
+            } else if (interfaz.luzEnMovimiento == 1) {
+                interfaz.escena.moverLuzCono(0.5f, 0, 0);
+            }
+            break;
+        case 'y':  // Mover en -Y
+            if (interfaz.luzEnMovimiento == 0) {
+                interfaz.escena.moverLuzPuntual(0, -0.5f, 0);
+            } else if (interfaz.luzEnMovimiento == 1) {
+                interfaz.escena.moverLuzCono(0, -0.5f, 0);
+            }
+            break;
+        case 'Y':  // Mover en +Y
+            if (interfaz.luzEnMovimiento == 0) {
+                interfaz.escena.moverLuzPuntual(0, 0.5f, 0);
+            } else if (interfaz.luzEnMovimiento == 1) {
+                interfaz.escena.moverLuzCono(0, 0.5f, 0);
+            }
+            break;
+        case 'z':  // Mover en -Z
+            if (interfaz.luzEnMovimiento == 0) {
+                interfaz.escena.moverLuzPuntual(0, 0, -0.5f);
+            } else if (interfaz.luzEnMovimiento == 1) {
+                interfaz.escena.moverLuzCono(0, 0, -0.5f);
+            }
+            break;
+        case 'Z':  // Mover en +Z
+            if (interfaz.luzEnMovimiento == 0) {
+                interfaz.escena.moverLuzPuntual(0, 0, 0.5f);
+            } else if (interfaz.luzEnMovimiento == 1) {
+                interfaz.escena.moverLuzCono(0, 0, 0.5f);
+            }
+            break;
         case 27:
             exit(1);
     }
